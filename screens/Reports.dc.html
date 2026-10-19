@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reports</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  body { margin:0; font-family:'IBM Plex Sans',sans-serif; background:#0A0C0E; color:#F2F3F3; }
+  a { color:inherit; text-decoration:none; }
+  .row-link { transition: background 0.12s ease; }
+  .row-link:hover { background:#1B1F23; }
+  .tpl-card:hover { border-color:#17BFB4; }
+  ::selection { background: rgba(23,191,180,0.28); }
+</style>
+</helmet>
+<div style="width:100%;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;background:#0A0C0E;overflow:hidden;">
+
+  <header style="height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 31px;background:#000000;border-bottom:1px solid #262B2F;">
+    <div style="display:flex;align-items:center;gap:18px;">
+      <a href="Dashboard.dc.html" aria-label="Back to Wealth Platform" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:7px;color:#9BA1A6;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div style="width:1px;height:22px;background:#262B2F;"></div>
+      <div style="width:36px;height:36px;border-radius:8px;background:#17BFB4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></svg>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span style="font-family:'Archivo',sans-serif;font-size:18.5px;font-weight:700;color:#F2F3F3;">Reports</span>
+          <span style="font-size:10.5px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#2DD4C7;background:rgba(23,191,180,0.14);padding:3px 8px;border-radius:4px;">Standalone App</span>
+        </div>
+        <div style="font-size:12px;color:#6B7278;margin-top:2px;">Future Firm · BNY Wealth Services</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <div style="position:relative;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7278" stroke-width="1.8" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search reports…" aria-label="Search reports" style="width:220px;height:34px;border-radius:8px;border:1px solid #262B2F;background:#14171A;padding:0 13px 0 38px;font-size:14px;color:#F2F3F3;font-family:'IBM Plex Sans',sans-serif;">
+      </div>
+      <button aria-label="Notifications" style="position:relative;background:none;border:none;cursor:pointer;padding:5px;color:#9BA1A6;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#9BA1A6;">Thu, Sep 17, 2026</div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#17BFB4;color:#06120F;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">RM</div>
+    </div>
+  </header>
+
+  <main style="flex-grow:1;min-height:0;overflow:hidden;padding:31px 36px;display:flex;flex-direction:column;gap:25px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0;">
+      <div>
+        <div style="font-family:'Archivo',sans-serif;font-size:28px;font-weight:700;color:#F2F3F3;">Reports</div>
+        <div style="font-size:14.5px;color:#9BA1A6;margin-top:5px;">Generate and manage client-facing and internal reports.</div>
+      </div>
+      <button style="background:#17BFB4;color:#06120F;border:none;border-radius:8px;padding:11px 20px;font-size:14.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:9px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        New Report
+      </button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;flex-shrink:0;">
+      <div class="tpl-card" style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:11px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(23,191,180,0.14);display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2DD4C7" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+        </div>
+        <div style="font-size:15px;font-weight:600;color:#F2F3F3;">Quarterly Performance Review</div>
+        <div style="font-size:13px;color:#9BA1A6;line-height:1.5;flex-grow:1;">Household performance vs. benchmark, contribution &amp; withdrawal detail.</div>
+        <div style="font-size:13.5px;font-weight:600;color:#2DD4C7;">Generate →</div>
+      </div>
+      <div class="tpl-card" style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:11px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(23,191,180,0.14);display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2DD4C7" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M15.3 14.3c2.9.4 5.2 2.5 5.2 5.7"/></svg>
+        </div>
+        <div style="font-size:15px;font-weight:600;color:#F2F3F3;">Household Summary</div>
+        <div style="font-size:13px;color:#9BA1A6;line-height:1.5;flex-grow:1;">Consolidated net worth, account list, and allocation snapshot.</div>
+        <div style="font-size:13.5px;font-weight:600;color:#2DD4C7;">Generate →</div>
+      </div>
+      <div class="tpl-card" style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:11px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(23,191,180,0.14);display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2DD4C7" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"/><path d="M9 13h6M9 17h4"/></svg>
+        </div>
+        <div style="font-size:15px;font-weight:600;color:#F2F3F3;">Tax Statement Package</div>
+        <div style="font-size:13px;color:#9BA1A6;line-height:1.5;flex-grow:1;">Realized gain/loss, tax lot detail, and Form 1099 support schedules.</div>
+        <div style="font-size:13.5px;font-weight:600;color:#2DD4C7;">Generate →</div>
+      </div>
+      <div class="tpl-card" style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:11px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(23,191,180,0.14);display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2DD4C7" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>
+        </div>
+        <div style="font-size:15px;font-weight:600;color:#F2F3F3;">Asset Allocation Report</div>
+        <div style="font-size:13px;color:#9BA1A6;line-height:1.5;flex-grow:1;">Target vs. current allocation, drift by asset class and sleeve.</div>
+        <div style="font-size:13.5px;font-weight:600;color:#2DD4C7;">Generate →</div>
+      </div>
+      <div class="tpl-card" style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:11px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(23,191,180,0.14);display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2DD4C7" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M3 10h18"/></svg>
+        </div>
+        <div style="font-size:15px;font-weight:600;color:#F2F3F3;">Fee Disclosure Statement</div>
+        <div style="font-size:13px;color:#9BA1A6;line-height:1.5;flex-grow:1;">Itemized advisory, custody, and transaction fees by account.</div>
+        <div style="font-size:13.5px;font-weight:600;color:#2DD4C7;">Generate →</div>
+      </div>
+      <div class="tpl-card" style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:11px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(23,191,180,0.14);display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2DD4C7" stroke-width="1.8"><path d="M4 21V10M12 21V3M20 21v-7"/></svg>
+        </div>
+        <div style="font-size:15px;font-weight:600;color:#F2F3F3;">Custom Report Builder</div>
+        <div style="font-size:13px;color:#9BA1A6;line-height:1.5;flex-grow:1;">Combine any data modules into a saved, reusable report template.</div>
+        <div style="font-size:13.5px;font-weight:600;color:#2DD4C7;">Build →</div>
+      </div>
+    </div>
+
+    <div style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:22px 0 7px;display:flex;flex-direction:column;flex-grow:1;min-height:0;">
+      <div style="font-size:15.5px;font-weight:600;color:#F2F3F3;padding:0 22px 13px;flex-shrink:0;">Recent Reports</div>
+      <div style="display:grid;grid-template-columns:2.3fr 1.9fr 1.5fr 1.1fr 1.2fr 0.8fr;padding:0 22px 10px;font-size:12px;font-weight:600;color:#6B7278;text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid #21252A;flex-shrink:0;">
+        <div>Report Name</div><div>Client / Household</div><div>Type</div><div>Generated</div><div>By</div><div>Actions</div>
+      </div>
+      <div style="overflow:auto;">
+        <div class="row-link" style="display:grid;grid-template-columns:2.3fr 1.9fr 1.5fr 1.1fr 1.2fr 0.8fr;padding:12px 22px;align-items:center;border-bottom:1px solid #1B1F23;font-size:14px;">
+          <div style="font-weight:600;color:#F2F3F3;">Q3 2026 Performance Review</div>
+          <div style="color:#9BA1A6;">The Hartley Family Trust</div>
+          <div style="color:#9BA1A6;">Performance</div>
+          <div style="font-family:'IBM Plex Mono',monospace;color:#9BA1A6;">Sep 15</div>
+          <div style="color:#9BA1A6;">R. Moreno</div>
+          <div style="color:#2DD4C7;font-weight:600;">View</div>
+        </div>
+        <div class="row-link" style="display:grid;grid-template-columns:2.3fr 1.9fr 1.5fr 1.1fr 1.2fr 0.8fr;padding:12px 22px;align-items:center;border-bottom:1px solid #1B1F23;font-size:14px;">
+          <div style="font-weight:600;color:#F2F3F3;">Household Summary — Q3</div>
+          <div style="color:#9BA1A6;">The Okafor Foundation</div>
+          <div style="color:#9BA1A6;">Summary</div>
+          <div style="font-family:'IBM Plex Mono',monospace;color:#9BA1A6;">Sep 14</div>
+          <div style="color:#9BA1A6;">R. Moreno</div>
+          <div style="color:#2DD4C7;font-weight:600;">View</div>
+        </div>
+        <div class="row-link" style="display:grid;grid-template-columns:2.3fr 1.9fr 1.5fr 1.1fr 1.2fr 0.8fr;padding:12px 22px;align-items:center;border-bottom:1px solid #1B1F23;font-size:14px;">
+          <div style="font-weight:600;color:#F2F3F3;">2025 Tax Statement Package</div>
+          <div style="color:#9BA1A6;">Delacroix Holdings LLC</div>
+          <div style="color:#9BA1A6;">Tax</div>
+          <div style="font-family:'IBM Plex Mono',monospace;color:#9BA1A6;">Sep 10</div>
+          <div style="color:#9BA1A6;">J. Alvarez</div>
+          <div style="color:#2DD4C7;font-weight:600;">View</div>
+        </div>
+        <div class="row-link" style="display:grid;grid-template-columns:2.3fr 1.9fr 1.5fr 1.1fr 1.2fr 0.8fr;padding:12px 22px;align-items:center;border-bottom:1px solid #1B1F23;font-size:14px;">
+          <div style="font-weight:600;color:#F2F3F3;">Asset Allocation — Sep 2026</div>
+          <div style="color:#9BA1A6;">The Vance-Whitaker Trust</div>
+          <div style="color:#9BA1A6;">Allocation</div>
+          <div style="font-family:'IBM Plex Mono',monospace;color:#9BA1A6;">Sep 8</div>
+          <div style="color:#9BA1A6;">R. Moreno</div>
+          <div style="color:#2DD4C7;font-weight:600;">View</div>
+        </div>
+        <div class="row-link" style="display:grid;grid-template-columns:2.3fr 1.9fr 1.5fr 1.1fr 1.2fr 0.8fr;padding:12px 22px;align-items:center;font-size:14px;">
+          <div style="font-weight:600;color:#F2F3F3;">Fee Disclosure — H2 2026</div>
+          <div style="color:#9BA1A6;">Eleanor Whitfield</div>
+          <div style="color:#9BA1A6;">Fee</div>
+          <div style="font-family:'IBM Plex Mono',monospace;color:#9BA1A6;">Sep 2</div>
+          <div style="color:#9BA1A6;">J. Alvarez</div>
+          <div style="color:#2DD4C7;font-weight:600;">View</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1110}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

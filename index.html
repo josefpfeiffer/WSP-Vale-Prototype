@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ashworth &amp; Vale Wealth Platform</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root { --bg:#0A0C0E; --card:#14171A; --border:#262B2F; --text:#F2F3F3; --muted:#9BA1A6; --accent:#2DD4C7; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',system-ui,sans-serif; }
+  main { max-width:1200px; margin:0 auto; padding:48px 32px 80px; }
+  .eyebrow { font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  h1 { font-family:'Archivo',sans-serif; font-size:34px; margin:8px 0 6px; }
+  p.lede { color:var(--muted); font-size:15px; margin:0 0 20px; max-width:62ch; line-height:1.55; }
+  .start { display:inline-block; background:#17BFB4; color:#06120F; font-weight:600; font-size:15px; padding:12px 22px; border-radius:8px; text-decoration:none; }
+  section { margin-top:40px; }
+  h2 { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; margin:0 0 12px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
+  .card { display:flex; flex-direction:column; gap:4px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; text-decoration:none; color:inherit; }
+  .card:hover { border-color:var(--accent); }
+  .t { font-size:14.5px; font-weight:600; }
+  .f { font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#6B7278; }
+</style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">BNY Wealth Services · Prototype</div>
+    <h1>Ashworth &amp; Vale Wealth Platform</h1>
+    <p class="lede">Clickable prototype. Every screen fills the browser window; the sidebar and in-page links navigate between screens. Start at the dashboard or jump to any screen below.</p>
+    <a class="start" href="screens/Dashboard.dc.html">Start at Dashboard →</a>
+    <section>
+      <h2>Dashboard, Book of Business Lists, Client &amp; Account Overviews</h2>
+      <div class="grid">
+        <a class="card" href="screens/Dashboard.dc.html"><span class="t">Dashboard</span><span class="f">Dashboard.dc.html</span></a>
+        <a class="card" href="screens/ClientList.dc.html"><span class="t">Client Directory</span><span class="f">ClientList.dc.html</span></a>
+        <a class="card" href="screens/AccountList.dc.html"><span class="t">Account Directory</span><span class="f">AccountList.dc.html</span></a>
+        <a class="card" href="screens/Groups.dc.html"><span class="t">Groups</span><span class="f">Groups.dc.html</span></a>
+        <a class="card" href="screens/ClientProfile.dc.html"><span class="t">Client Profile — Hartley Family Trust</span><span class="f">ClientProfile.dc.html</span></a>
+        <a class="card" href="screens/AccountDetail.dc.html"><span class="t">Account Overview — Joint Brokerage</span><span class="f">AccountDetail.dc.html</span></a>
+        <a class="card" href="screens/AccountDetailRothIRA.dc.html"><span class="t">Account Overview — Roth IRA</span><span class="f">AccountDetailRothIRA.dc.html</span></a>
+        <a class="card" href="screens/AccountDetailSavings.dc.html"><span class="t">Account Overview — Premier Savings</span><span class="f">AccountDetailSavings.dc.html</span></a>
+        <a class="card" href="screens/AccountDetailLoan.dc.html"><span class="t">Account Overview — Securities-Backed Line of Credit</span><span class="f">AccountDetailLoan.dc.html</span></a>
+        <a class="card" href="screens/AccountDetailUMA.dc.html"><span class="t">Account Overview — Unified Managed Account</span><span class="f">AccountDetailUMA.dc.html</span></a>
+        <a class="card" href="screens/AccountHoldings.dc.html"><span class="t">Account Holdings — Joint Brokerage</span><span class="f">AccountHoldings.dc.html</span></a>
+      </div>
+    </section>
+    <section>
+      <h2>Model Portfolios</h2>
+      <div class="grid">
+        <a class="card" href="screens/ModelPortfolios.dc.html"><span class="t">Model Portfolios</span><span class="f">ModelPortfolios.dc.html</span></a>
+        <a class="card" href="screens/ModelCreate.dc.html"><span class="t">Model Portfolios — New Model</span><span class="f">ModelCreate.dc.html</span></a>
+        <a class="card" href="screens/ModelProposals.dc.html"><span class="t">Model Portfolios — Proposals</span><span class="f">ModelProposals.dc.html</span></a>
+        <a class="card" href="screens/ModelRiskAnalysis.dc.html"><span class="t">Model Portfolios — Risk Analysis</span><span class="f">ModelRiskAnalysis.dc.html</span></a>
+        <a class="card" href="screens/ModelTaxManagement.dc.html"><span class="t">Model Portfolios — Tax Management</span><span class="f">ModelTaxManagement.dc.html</span></a>
+      </div>
+    </section>
+    <section>
+      <h2>Standalone Apps — Focused Mode</h2>
+      <div class="grid">
+        <a class="card" href="screens/Reports.dc.html"><span class="t">Reports — Standalone App</span><span class="f">Reports.dc.html</span></a>
+        <a class="card" href="screens/Trading.dc.html"><span class="t">Trading — Standalone App</span><span class="f">Trading.dc.html</span></a>
+      </div>
+    </section>
+    <section>
+      <h2>Trading — Order Entry, Rebalancing &amp; Portfolio Tools</h2>
+      <div class="grid">
+        <a class="card" href="screens/TradingSingleOrder.dc.html"><span class="t">Trading — Single Order Entry</span><span class="f">TradingSingleOrder.dc.html</span></a>
+        <a class="card" href="screens/TradingBulkOrder.dc.html"><span class="t">Trading — Bulk Order Entry</span><span class="f">TradingBulkOrder.dc.html</span></a>
+        <a class="card" href="screens/TradingRebalancer.dc.html"><span class="t">Trading — Bulk Rebalancer</span><span class="f">TradingRebalancer.dc.html</span></a>
+        <a class="card" href="screens/TradingSwaps.dc.html"><span class="t">Trading — Investment Swaps</span><span class="f">TradingSwaps.dc.html</span></a>
+        <a class="card" href="screens/TradingTaxHarvest.dc.html"><span class="t">Trading — Tax Harvest</span><span class="f">TradingTaxHarvest.dc.html</span></a>
+      </div>
+    </section>
+    <section>
+      <h2>Trading</h2>
+      <div class="grid">
+        <a class="card" href="screens/TradingCashRestrictions.dc.html"><span class="t">Trading — Cash Restrictions</span><span class="f">TradingCashRestrictions.dc.html</span></a>
+        <a class="card" href="screens/TradingOverlay.dc.html"><span class="t">Trading — Overlay Management</span><span class="f">TradingOverlay.dc.html</span></a>
+        <a class="card" href="screens/TradingModelEnrichment.dc.html"><span class="t">Trading — Model Enrichment</span><span class="f">TradingModelEnrichment.dc.html</span></a>
+        <a class="card" href="screens/TradingFixedIncome.dc.html"><span class="t">Fixed Income Trading — Powered by Moment</span><span class="f">TradingFixedIncome.dc.html</span></a>
+      </div>
+    </section>
+    <section>
+      <h2>Markets &amp; Alternatives</h2>
+      <div class="grid">
+        <a class="card" href="screens/Markets.dc.html"><span class="t">Markets</span><span class="f">Markets.dc.html</span></a>
+        <a class="card" href="screens/MarketsSecurityDetail.dc.html"><span class="t">Markets — Security Detail (AAPL)</span><span class="f">MarketsSecurityDetail.dc.html</span></a>
+        <a class="card" href="screens/Alternatives.dc.html"><span class="t">Alternatives</span><span class="f">Alternatives.dc.html</span></a>
+        <a class="card" href="screens/AlternativesFundDetail.dc.html"><span class="t">Alternatives — Fund Detail</span><span class="f">AlternativesFundDetail.dc.html</span></a>
+      </div>
+    </section>
+    <section>
+      <h2>Workflows</h2>
+      <div class="grid">
+        <a class="card" href="screens/Workflows.dc.html"><span class="t">Workflows</span><span class="f">Workflows.dc.html</span></a>
+        <a class="card" href="screens/WorkflowNew.dc.html"><span class="t">Workflows — Start New Workflow</span><span class="f">WorkflowNew.dc.html</span></a>
+        <a class="card" href="screens/WorkflowDetail.dc.html"><span class="t">Workflows — Open New Account (Detail)</span><span class="f">WorkflowDetail.dc.html</span></a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

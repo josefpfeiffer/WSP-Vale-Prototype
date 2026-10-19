@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixed Income Trading</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  body { margin:0; font-family:'IBM Plex Sans',sans-serif; background:#0B0B14; color:#F2F3F3; }
+  a { color:inherit; text-decoration:none; }
+  .row-link { transition: background 0.12s ease; }
+  .row-link:hover { background:#1B1B26; }
+  ::selection { background: rgba(139,124,246,0.28); }
+</style>
+</helmet>
+<div style="width:100%;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;background:#0B0B14;overflow:hidden;">
+
+  <div style="background:#151320;border-bottom:1px solid #2A2740;padding:7px 31px;display:flex;align-items:center;gap:9px;font-size:12.5px;color:#9B93C4;flex-shrink:0;">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+    You're now in a partner application, hosted and operated by Moment. Your Future Firm session and account access carry over automatically.
+  </div>
+
+  <header style="height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 31px;background:#100F1A;border-bottom:1px solid #2A2740;">
+    <div style="display:flex;align-items:center;gap:18px;">
+      <a href="Trading.dc.html" aria-label="Back to Trading" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:7px;color:#9BA1A6;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div style="width:1px;height:22px;background:#2A2740;"></div>
+      <div style="width:36px;height:36px;border-radius:8px;background:#8B7CF6;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#120E2A" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span style="font-family:'Archivo',sans-serif;font-size:18.5px;font-weight:700;color:#F2F3F3;">moment</span>
+          <span style="font-size:10.5px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#C3B8FF;background:rgba(139,124,246,0.16);padding:3px 8px;border-radius:4px;">Partner App</span>
+        </div>
+        <div style="font-size:12px;color:#6B7278;margin-top:2px;">Fixed Income Trading · for Future Firm</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <div style="position:relative;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7278" stroke-width="1.8" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search by CUSIP, issuer, maturity…" aria-label="Search fixed income" style="width:260px;height:34px;border-radius:8px;border:1px solid #2A2740;background:#151320;padding:0 13px 0 38px;font-size:14px;color:#F2F3F3;">
+      </div>
+      <button aria-label="Notifications" style="position:relative;background:none;border:none;cursor:pointer;padding:5px;color:#9BA1A6;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#9BA1A6;">Thu, Sep 17, 2026</div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#8B7CF6;color:#120E2A;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">RM</div>
+    </div>
+  </header>
+
+  <main style="flex-grow:1;min-height:0;overflow:hidden;padding:27px 31px;display:flex;flex-direction:column;gap:18px;">
+    <div style="flex-shrink:0;">
+      <div style="font-family:'Archivo',sans-serif;font-size:24.5px;font-weight:700;color:#F2F3F3;">Fixed Income Trading</div>
+      <div style="font-size:14px;color:#9B93C4;margin-top:5px;">Bond search, RFQ, and execution across Future Firm's dealer network — powered by Moment.</div>
+    </div>
+
+    <div style="background:#151320;border:1px solid #2A2740;border-radius:10px;padding:13px 20px;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:25px;font-family:'IBM Plex Mono',monospace;font-size:13.5px;flex-wrap:wrap;">
+        <span style="font-size:11px;color:#B8ACFF;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;font-family:'IBM Plex Sans',sans-serif;">UST Yield Curve</span>
+        <span style="display:flex;gap:7px;"><span style="color:#9B93C4;">1M</span><span style="color:#F2F3F3;">5.31%</span></span>
+        <span style="display:flex;gap:7px;"><span style="color:#9B93C4;">3M</span><span style="color:#F2F3F3;">5.18%</span></span>
+        <span style="display:flex;gap:7px;"><span style="color:#9B93C4;">1Y</span><span style="color:#F2F3F3;">4.62%</span></span>
+        <span style="display:flex;gap:7px;"><span style="color:#9B93C4;">2Y</span><span style="color:#F2F3F3;">4.41%</span></span>
+        <span style="display:flex;gap:7px;"><span style="color:#9B93C4;">5Y</span><span style="color:#F2F3F3;">4.33%</span></span>
+        <span style="display:flex;gap:7px;"><span style="color:#9B93C4;">10Y</span><span style="color:#F2F3F3;">4.28%</span></span>
+        <span style="display:flex;gap:7px;"><span style="color:#9B93C4;">30Y</span><span style="color:#F2F3F3;">4.47%</span></span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:18px;flex-grow:1;min-height:0;">
+      <div style="background:#151320;border:1px solid #2A2740;border-radius:10px;padding:22px;overflow:auto;">
+        <div style="font-size:14.5px;font-weight:600;color:#F2F3F3;margin-bottom:16px;">New RFQ</div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <div>
+            <label style="display:block;font-size:12.5px;color:#9B93C4;font-weight:600;margin-bottom:7px;">CUSIP / Issuer</label>
+            <input type="text" value="912828 — U.S. Treasury 4.25% 2033" style="width:100%;box-sizing:border-box;height:36px;border-radius:8px;border:1px solid #2A2740;background:#0E0D18;padding:0 11px;font-size:14px;color:#F2F3F3;">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;">
+            <div>
+              <label style="display:block;font-size:12.5px;color:#9B93C4;font-weight:600;margin-bottom:7px;">Side</label>
+              <select style="width:100%;box-sizing:border-box;height:36px;border-radius:8px;border:1px solid #2A2740;background:#0E0D18;padding:0 11px;font-size:14px;color:#F2F3F3;">
+                <option>Buy</option><option>Sell</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:12.5px;color:#9B93C4;font-weight:600;margin-bottom:7px;">Quantity (face)</label>
+              <input type="text" value="500,000" style="width:100%;box-sizing:border-box;height:36px;border-radius:8px;border:1px solid #2A2740;background:#0E0D18;padding:0 11px;font-size:14px;color:#F2F3F3;font-family:'IBM Plex Mono',monospace;">
+            </div>
+          </div>
+          <div>
+            <label style="display:block;font-size:12.5px;color:#9B93C4;font-weight:600;margin-bottom:7px;">Dealers to Query</label>
+            <select style="width:100%;box-sizing:border-box;height:36px;border-radius:8px;border:1px solid #2A2740;background:#0E0D18;padding:0 11px;font-size:14px;color:#F2F3F3;">
+              <option>All connected dealers (12)</option><option>Top 5 by fill rate</option><option>Custom list</option>
+            </select>
+          </div>
+          <button style="background:#8B7CF6;color:#120E2A;border:none;border-radius:8px;padding:12px;font-size:14.5px;font-weight:600;cursor:pointer;margin-top:5px;">Send RFQ</button>
+        </div>
+      </div>
+
+      <div style="background:#151320;border:1px solid #2A2740;border-radius:10px;padding:18px 0 7px;display:flex;flex-direction:column;min-height:0;">
+        <div style="font-size:14.5px;font-weight:600;color:#F2F3F3;padding:0 20px 11px;flex-shrink:0;">Active RFQs</div>
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.4fr 1fr 1.1fr;padding:0 20px 9px;font-size:11px;font-weight:600;color:#9B93C4;text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid #2A2740;flex-shrink:0;">
+          <div>Security</div><div>Dealer</div><div>Bid / Ask</div><div>Size</div><div>Status</div>
+        </div>
+        <div style="overflow:auto;">
+          <div class="row-link" style="display:grid;grid-template-columns:2fr 1.2fr 1.4fr 1fr 1.1fr;padding:11px 20px;align-items:center;border-bottom:1px solid #201D33;font-size:13px;">
+            <div style="font-weight:600;color:#F2F3F3;">UST 4.25% 2033</div>
+            <div style="color:#9B93C4;">Wells Fargo</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#9B93C4;">99.62 / 99.68</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#9B93C4;">$500K</div>
+            <div style="color:#34D399;font-weight:600;">Quoted</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:2fr 1.2fr 1.4fr 1fr 1.1fr;padding:11px 20px;align-items:center;border-bottom:1px solid #201D33;font-size:13px;">
+            <div style="font-weight:600;color:#F2F3F3;">CA Muni 5% 2041</div>
+            <div style="color:#9B93C4;">RBC Capital</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#9B93C4;">101.10 / 101.30</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#9B93C4;">$250K</div>
+            <div style="color:#E3A438;font-weight:600;">Pending</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:2fr 1.2fr 1.4fr 1fr 1.1fr;padding:11px 20px;align-items:center;border-bottom:1px solid #201D33;font-size:13px;">
+            <div style="font-weight:600;color:#F2F3F3;">AAPL 3.85% 2029 Corp</div>
+            <div style="color:#9B93C4;">Jefferies</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#9B93C4;">96.40 / 96.55</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#9B93C4;">$1.0M</div>
+            <div style="color:#34D399;font-weight:600;">Filled</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:2fr 1.2fr 1.4fr 1fr 1.1fr;padding:11px 20px;align-items:center;font-size:13px;">
+            <div style="font-weight:600;color:#F2F3F3;">NY Muni 4.5% 2038</div>
+            <div style="color:#9B93C4;">Stifel</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#9B93C4;">100.05 / 100.22</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#9B93C4;">$300K</div>
+            <div style="color:#34D399;font-weight:600;">Quoted</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1050}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+
+  :root {
+    --bg-page: #0A0C0E;
+    --bg-sidebar: #000000;
+    --bg-card: #14171A;
+    --bg-subtle: #171B1E;
+    --bg-header: #0E1113;
+    --border-row: #1B1F23;
+    --border-strong: #21252A;
+    --border-card: #262B2F;
+    --text-primary: #F2F3F3;
+    --text-secondary: #9BA1A6;
+    --text-tertiary: #6B7278;
+    --text-nav-inactive: #ADB4B9;
+    --text-dim: #5C6368;
+    --text-faint: #40464C;
+    --nav-active-text: #E8FBF9;
+    --positive: #34D399;
+    --negative: #FF7A6E;
+    --negative-soft: #FF9F94;
+    --warning: #E3A438;
+    --accent-bright: #2DD4C7;
+    --divider-on-dark: rgba(255,255,255,0.10);
+    --nav-hover-bg: rgba(255,255,255,0.06);
+  }
+  [data-theme="light"] {
+    --bg-page: #F4F5F6;
+    --bg-sidebar: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F1F3F5;
+    --bg-header: #FFFFFF;
+    --border-row: #ECEEF0;
+    --border-strong: #E3E6E9;
+    --border-card: #DEE2E6;
+    --text-primary: #161A1D;
+    --text-secondary: #5B6268;
+    --text-tertiary: #747C83;
+    --text-nav-inactive: #5B6268;
+    --text-dim: #9AA1A7;
+    --text-faint: #C7CBCF;
+    --nav-active-text: #0B7A70;
+    --positive: #0E9F6E;
+    --negative: #E14A3E;
+    --negative-soft: #D96A61;
+    --warning: #96690C;
+    --accent-bright: #0E9187;
+    --divider-on-dark: rgba(10,12,14,0.10);
+    --nav-hover-bg: rgba(10,12,14,0.045);
+  }
+
+  body { margin:0; font-family:'IBM Plex Sans',sans-serif; background:var(--bg-page); color:var(--text-primary); }
+  a { color:inherit; text-decoration:none; }
+  .nav-item:hover { background: var(--nav-hover-bg); }
+  .row-link { transition: background 0.12s ease; }
+  .row-link:hover { background:var(--border-row); }
+  ::selection { background: rgba(23,191,180,0.28); }
+
+  .eliza-icon-btn {
+    background:none; border:1px solid var(--border-card); border-radius:7px; width:32px; height:32px;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-secondary);
+    flex-shrink:0; font-family:'IBM Plex Sans',sans-serif;
+  }
+  .eliza-icon-btn:hover { background:rgba(255,255,255,0.06); color:var(--text-primary); }
+  .eliza-history-pop {
+    position:absolute; top:44px; right:0; width:296px; background:var(--bg-subtle); border:1px solid var(--border-strong);
+    border-radius:10px; box-shadow:0 18px 40px rgba(0,0,0,0.45); z-index:50; overflow:hidden;
+  }
+  .eliza-history-pop-head { padding:12px 14px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-tertiary); border-bottom:1px solid var(--border-row); }
+  .eliza-history-item { padding:11px 14px; cursor:pointer; border-bottom:1px solid var(--border-row); }
+  .eliza-history-item:last-child { border-bottom:none; }
+  .eliza-history-item:hover { background:var(--border-row); }
+  .eliza-history-item-title { font-size:13px; font-weight:600; color:var(--text-primary); }
+  .eliza-history-item-meta { font-size:11.5px; color:var(--text-tertiary); margin-top:3px; }
+  .eliza-action-row { cursor:pointer; border-radius:6px; }
+  .eliza-action-row:hover { background:var(--border-row); }
+  .eliza-inputbar {
+    display:flex; align-items:center; gap:8px; border:1px solid var(--border-card); background:var(--bg-header);
+    border-radius:10px; padding:6px 8px 6px 6px;
+  }
+  .eliza-plug-btn {
+    background:none; border:none; width:34px; height:34px; border-radius:7px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color:var(--text-secondary); flex-shrink:0; position:relative;
+  }
+  .eliza-plug-btn:hover { background:rgba(255,255,255,0.06); color:var(--text-primary); }
+  .eliza-plug-dot { position:absolute; top:5px; right:5px; width:7px; height:7px; border-radius:50%; background:var(--accent-bright); border:2px solid var(--bg-header); }
+  .eliza-inputbar input { flex-grow:1; border:none; background:none; outline:none; color:var(--text-primary); font-size:13.5px; font-family:'IBM Plex Sans',sans-serif; min-width:0; }
+  .eliza-send-btn {
+    background:var(--accent-bright); border:none; width:32px; height:32px; border-radius:8px; display:flex; align-items:center;
+    justify-content:center; cursor:pointer; color:#06120F; flex-shrink:0;
+  }
+  .eliza-send-btn[disabled] { opacity:0.35; cursor:default; }
+  .eliza-agent-pop {
+    position:absolute; bottom:56px; left:0; width:300px; background:var(--bg-subtle); border:1px solid var(--border-strong);
+    border-radius:10px; box-shadow:0 18px 40px rgba(0,0,0,0.45); z-index:60; padding:8px;
+  }
+  .eliza-agent-pop.fs { bottom:auto; top:42px; left:auto; right:0; }
+  .eliza-agent-pop-head { padding:8px 8px 10px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-tertiary); }
+  .eliza-agent-opt { display:flex; align-items:center; gap:10px; padding:9px 8px; border-radius:8px; cursor:pointer; }
+  .eliza-agent-opt:hover { background:var(--border-row); }
+  .eliza-agent-icon { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'Archivo',sans-serif; font-size:11.5px; font-weight:700; flex-shrink:0; }
+  .eliza-agent-label { font-size:13px; font-weight:600; color:var(--text-primary); flex-grow:1; }
+  .eliza-agent-toggle { width:32px; height:19px; border-radius:100px; position:relative; flex-shrink:0; transition:background .15s ease; }
+  .eliza-agent-toggle::after { content:''; position:absolute; width:15px; height:15px; border-radius:50%; background:#fff; top:2px; left:2px; transition:left .15s ease; }
+
+  .eliza-fs-overlay { position:fixed; inset:0; background:var(--bg-page); z-index:1000; display:flex; flex-direction:row; font-family:'IBM Plex Sans',sans-serif; }
+  .eliza-fs-sidebar { width:272px; flex-shrink:0; background:#000000; display:flex; flex-direction:column; border-right:1px solid var(--border-strong); }
+  .eliza-fs-sidebar-head { padding:20px 16px 14px; border-bottom:1px solid var(--border-row); }
+  .eliza-fs-sidebar-brand { display:flex; align-items:center; gap:11px; margin-bottom:16px; }
+  .eliza-fs-newchat {
+    display:flex; align-items:center; gap:10px; width:100%; background:rgba(255,255,255,0.05); border:1px solid var(--border-strong);
+    color:var(--text-primary); border-radius:8px; padding:10px 12px; font-size:13.5px; font-weight:600; cursor:pointer; font-family:'IBM Plex Sans',sans-serif;
+  }
+  .eliza-fs-newchat:hover { background:rgba(255,255,255,0.09); }
+  .eliza-fs-sidebar-list { flex-grow:1; overflow-y:auto; padding:12px 10px; }
+  .eliza-fs-sidebar-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-dim); padding:8px 8px 6px; }
+  .eliza-fs-hitem { padding:10px 10px; border-radius:8px; cursor:pointer; margin-bottom:2px; }
+  .eliza-fs-hitem:hover { background:rgba(255,255,255,0.06); }
+  .eliza-fs-hitem.active { background:rgba(45,212,199,0.12); }
+  .eliza-fs-hitem-title { font-size:13px; font-weight:600; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .eliza-fs-hitem-meta { font-size:11px; color:var(--text-tertiary); margin-top:2px; }
+
+  .eliza-fs-main { flex-grow:1; display:flex; flex-direction:column; min-width:0; }
+  .eliza-fs-topbar { height:64px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid var(--border-card); background:var(--bg-header); }
+  .eliza-fs-topbar-left { display:flex; align-items:center; gap:12px; }
+  .eliza-agent-chip { display:flex; align-items:center; gap:6px; background:var(--bg-subtle); border:1px solid var(--border-card); border-radius:100px; padding:5px 10px 5px 6px; font-size:12px; font-weight:600; color:var(--text-secondary); }
+  .eliza-agent-chip .dot { width:16px; height:16px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; font-family:'Archivo',sans-serif; }
+  .eliza-connect-more-btn { display:flex; align-items:center; gap:7px; background:none; border:1px dashed var(--border-strong); color:var(--text-tertiary); border-radius:100px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; font-family:'IBM Plex Sans',sans-serif; }
+  .eliza-connect-more-btn:hover { color:var(--text-primary); border-color:var(--text-tertiary); }
+
+  .eliza-fs-chat { flex-grow:1; overflow-y:auto; padding:32px 0; }
+  .eliza-fs-chat-inner { max-width:760px; margin:0 auto; padding:0 24px; display:flex; flex-direction:column; gap:22px; }
+
+  .eliza-fs-empty { max-width:760px; margin:40px auto 0; padding:0 24px; text-align:center; }
+  .eliza-fs-empty-avatar { width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg,#17BFB4,#7C5CFC); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+  .eliza-fs-empty-title { font-family:'Archivo',sans-serif; font-size:24px; font-weight:700; color:var(--text-primary); }
+  .eliza-fs-empty-sub { font-size:14.5px; color:var(--text-secondary); margin-top:8px; }
+  .eliza-fs-suggest-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:28px; text-align:left; }
+  .eliza-fs-suggest-card { background:var(--bg-card); border:1px solid var(--border-card); border-radius:10px; padding:16px; cursor:pointer; display:flex; gap:11px; }
+  .eliza-fs-suggest-card:hover { border-color:var(--border-strong); background:var(--bg-subtle); }
+  .eliza-fs-suggest-title { font-size:13.5px; font-weight:600; color:var(--text-primary); }
+  .eliza-fs-suggest-desc { font-size:12.5px; color:var(--text-tertiary); margin-top:3px; }
+
+  .eliza-msg { display:flex; gap:13px; align-items:flex-start; }
+  .eliza-msg.user { flex-direction:row-reverse; }
+  .eliza-msg-avatar { width:30px; height:30px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .eliza-msg.assistant .eliza-msg-avatar { background:linear-gradient(135deg,#17BFB4,#7C5CFC); }
+  .eliza-msg.user .eliza-msg-avatar { background:#17BFB4; color:#06120F; font-weight:700; font-size:12.5px; font-family:'Archivo',sans-serif; }
+  .eliza-msg-bubble { max-width:78%; font-size:14px; line-height:1.6; color:var(--text-primary); }
+  .eliza-msg.user .eliza-msg-bubble { background:var(--bg-card); border:1px solid var(--border-card); border-radius:12px; padding:12px 16px; }
+  .eliza-msg.assistant .eliza-msg-bubble { padding:2px 0; }
+  .eliza-msg-bubble ul { margin:8px 0; padding-left:20px; }
+  .eliza-msg-bubble li { margin-bottom:4px; }
+  .eliza-msg-source-card { display:inline-flex; align-items:center; gap:8px; background:var(--bg-card); border:1px solid var(--border-card); border-radius:8px; padding:9px 13px; margin-top:8px; font-size:12.5px; color:var(--accent-bright); font-weight:600; }
+
+  .eliza-typing-dots { display:flex; gap:4px; padding:6px 0; }
+  .eliza-typing-dots span { width:6px; height:6px; border-radius:50%; background:var(--text-tertiary); animation: elizaBounce 1.2s infinite ease-in-out; }
+  .eliza-typing-dots span:nth-child(2) { animation-delay:0.15s; }
+  .eliza-typing-dots span:nth-child(3) { animation-delay:0.3s; }
+  @keyframes elizaBounce { 0%,60%,100%{ transform:translateY(0); opacity:0.5; } 30%{ transform:translateY(-4px); opacity:1; } }
+
+  .eliza-fs-inputwrap { flex-shrink:0; padding:16px 24px 22px; }
+  .eliza-fs-inputbar-outer { max-width:760px; margin:0 auto; position:relative; }
+  .eliza-fs-inputbar {
+    display:flex; align-items:center; gap:8px; border:1px solid var(--border-card); background:var(--bg-header);
+    border-radius:12px; padding:8px 10px 8px 8px;
+  }
+  .eliza-fs-inputbar input { flex-grow:1; border:none; background:none; outline:none; color:var(--text-primary); font-size:14.5px; font-family:'IBM Plex Sans',sans-serif; min-width:0; }
+  .eliza-fs-input-note { text-align:center; font-size:11px; color:var(--text-dim); margin-top:10px; }
+  .eliza-fs-close { background:none; border:1px solid var(--border-card); border-radius:8px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-secondary); }
+  .eliza-fs-close:hover { background:rgba(255,255,255,0.06); color:var(--text-primary); }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width:100%;min-height:100vh;box-sizing:border-box;display:flex;background:var(--bg-page);">
+
+  <aside style="{{sidebarStyle}}">
+    <div style="padding:25px 18px 20px;border-bottom:1px solid var(--divider-on-dark);display:flex;align-items:flex-start;justify-content:space-between;gap:7px;">
+      <div style="min-width:0;overflow:hidden;">
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">
+          <div style="font-family:'Archivo',sans-serif;font-size:23.5px;font-weight:700;letter-spacing:0.01em;color:var(--text-primary);white-space:nowrap;">Future Firm</div>
+          <div style="font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:var(--accent-bright);margin-top:6px;white-space:nowrap;">BNY WEALTH SERVICES</div>
+        </sc-if>
+      </div>
+      <button aria-label="Collapse navigation" onClick="{{toggleNav}}" style="flex-shrink:0;background:none;border:1px solid var(--divider-on-dark);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);margin-top:3px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="transform:{{navToggleIconTransform}};transition:transform 0.18s ease;"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+    </div>
+    <nav style="flex-grow:1;padding:20px 13px;display:flex;flex-direction:column;gap:3px;">
+      <div class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;background:rgba(23,191,180,0.16);color:var(--nav-active-text);font-size:15px;font-weight:600;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Dashboard</sc-if>
+      </div>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Custody Book</div></sc-if></div>
+      <a href="AccountList.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="7" width="18" height="13" rx="1.5"></rect><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Accounts</sc-if>
+      </a>
+      <a href="ClientList.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3.2"></circle><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"></path><circle cx="17.5" cy="8.5" r="2.6"></circle><path d="M15.3 14.3c2.9.4 5.2 2.5 5.2 5.7"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Clients</sc-if>
+      </a>
+      <a href="Groups.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="9" r="5"></circle><circle cx="16" cy="9" r="5"></circle><circle cx="12" cy="16.5" r="5"></circle></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Groups</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Managed</div></sc-if></div>
+      <a href="ModelPortfolios.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l9 5-9 5-9-5 9-5z"></path><path d="M3 13l9 5 9-5"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Portfolios</sc-if>
+      </a>
+      <a href="Trading.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h10l-3-3M20 17H10l3 3"></path><path d="M4 7v6M20 17v-6"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><span style="flex-grow:1;">Trading</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><path d="M15 3h6v6"></path><path d="M10 14L21 3"></path></svg></sc-if>
+      </a>
+      <a href="Markets.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17l5-6 4 3 5-7 4 5"></path><path d="M3 21h18"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Markets</sc-if>
+      </a>
+      <a href="Alternatives.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"></rect><rect x="13" y="3" width="8" height="8" rx="1.5"></rect><rect x="3" y="13" width="8" height="8" rx="1.5"></rect><rect x="13" y="13" width="8" height="8" rx="1.5"></rect></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Alternatives</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Operations</div></sc-if></div>
+      <a href="Reports.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4M9 12h6M9 16h6"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><span style="flex-grow:1;">Reports</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><path d="M15 3h6v6"></path><path d="M10 14L21 3"></path></svg></sc-if>
+      </a>
+      <a href="Workflows.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 6h11M9 12h11M9 18h11"></path><path d="M4.5 6l1 1 2-2M4.5 12l1 1 2-2M4.5 18l1 1 2-2"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Workflows</sc-if>
+      </a>
+    </nav>
+    <div style="padding:18px {{sidebarFooterPad}};border-top:1px solid var(--divider-on-dark);display:flex;align-items:center;justify-content:{{sidebarFooterJustify}};gap:13px;">
+      <div style="width:38px;height:38px;border-radius:50%;background:#17BFB4;color:#06120F;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14.5px;flex-shrink:0;">RM</div>
+      <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">
+        <div style="min-width:0;flex-grow:1;">
+          <div style="font-size:14.5px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Rachel Moreno</div>
+          <div style="font-size:12.5px;color:var(--text-secondary);">Senior Advisor</div>
+        </div>
+      </sc-if>
+    </div>
+  </aside>
+
+  <div style="flex-grow:1;min-width:0;display:flex;flex-direction:column;height:100%;">
+    <header style="height:78px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 38px;border-bottom:1px solid var(--border-card);background:var(--bg-header);">
+      <div style="font-size:14.5px;color:var(--text-secondary);">
+        <span>Wealth Platform</span><span style="margin:0 9px;color:var(--text-faint);">/</span><span style="color:var(--text-primary);font-weight:600;">Dashboard</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:25px;">
+        <div style="position:relative;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.8" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+          <input type="text" placeholder="Search clients, accounts, securities…" aria-label="Global search" style="width:320px;height:38px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-card);padding:0 16px 0 43px;font-size:14.5px;color:var(--text-primary);font-family:'IBM Plex Sans',sans-serif;">
+        </div>
+        <button aria-label="Toggle color theme" onClick="{{toggleTheme}}" style="background:none;border:1px solid var(--border-card);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);flex-shrink:0;">
+          <sc-if value="{{isDark}}" hint-placeholder-val="{{true}}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"></path></svg>
+          </sc-if>
+          <sc-if value="{{isLight}}" hint-placeholder-val="{{false}}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"></path></svg>
+          </sc-if>
+        </button>
+        <button aria-label="Notifications" style="position:relative;background:none;border:none;cursor:pointer;padding:5px;color:var(--text-secondary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg>
+          <span style="position:absolute;top:2px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--negative);"></span>
+        </button>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--text-secondary);">Thu, Sep 17, 2026</div>
+      </div>
+    </header>
+
+    <main style="flex-grow:1;overflow:hidden;padding:36px;display:flex;flex-direction:column;gap:28px;min-height:0;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+        <div>
+          <div style="font-family:'Archivo',sans-serif;font-size:30px;font-weight:700;color:var(--text-primary);">Good afternoon, Rachel</div>
+          <div style="font-size:15px;color:var(--text-secondary);margin-top:5px;">Here's what's happening across your book today.</div>
+        </div>
+        <button style="background:#17BFB4;color:#06120F;border:none;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:9px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>
+          <span>Open New Account</span>
+        </button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;">
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:20px 22px;">
+          <div style="font-size:13px;color:var(--text-tertiary);font-weight:500;">Total AUM</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--text-primary);margin-top:7px;">$1.84B</div>
+          <div style="font-size:13px;color:var(--positive);margin-top:5px;">▲ 2.3% MTD</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:20px 22px;">
+          <div style="font-size:13px;color:var(--text-tertiary);font-weight:500;">Active Clients</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--text-primary);margin-top:7px;">342</div>
+          <div style="font-size:13px;color:var(--positive);margin-top:5px;">▲ 6 this month</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:20px 22px;">
+          <div style="font-size:13px;color:var(--text-tertiary);font-weight:500;">Open Accounts</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--text-primary);margin-top:7px;">918</div>
+          <div style="font-size:13px;color:var(--text-tertiary);margin-top:5px;">Across 6 custodians</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--warning);border-radius:10px;padding:20px 22px;">
+          <div style="font-size:13px;color:var(--text-tertiary);font-weight:500;">Trades Pending Review</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--text-primary);margin-top:7px;">7</div>
+          <div style="font-size:13px;color:var(--warning);margin-top:5px;">Needs attention</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:22px;">
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:18px;position:relative;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div style="display:flex;align-items:center;gap:13px;">
+              <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#17BFB4,#7C5CFC);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg>
+              </div>
+              <div>
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <span style="font-family:'Archivo',sans-serif;font-size:16px;font-weight:700;color:var(--text-primary);">Eliza</span>
+                  <span style="background:rgba(124,92,252,0.16);color:#B9A8FF;font-size:11px;font-weight:600;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.04em;">AI</span>
+                </div>
+                <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px;">Next best actions across your book</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <button class="eliza-icon-btn" aria-label="Chat history" title="Chat history" onClick="{{toggleElizaHistory}}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></svg>
+              </button>
+              <button class="eliza-icon-btn" aria-label="Open full screen" title="Open full screen" onClick="{{openElizaFsNew}}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H3v6M15 3h6v6M3 15v6h6M21 15v6h-6"></path></svg>
+              </button>
+              <sc-if value="{{elizaHistoryOpen}}" hint-placeholder-val="{{false}}">
+              <div class="eliza-history-pop">
+                <div class="eliza-history-pop-head">Recent conversations</div>
+                <div class="eliza-history-item" onClick="{{openElizaFsTaxloss}}"><div class="eliza-history-item-title">Tax-loss harvesting — Vance-Whitaker</div><div class="eliza-history-item-meta">Yesterday, 4:12 PM</div></div>
+                <div class="eliza-history-item" onClick="{{openElizaFsRebalance}}"><div class="eliza-history-item-title">Model drift review — Growth &amp; Income</div><div class="eliza-history-item-meta">Yesterday, 10:03 AM</div></div>
+                <div class="eliza-history-item" onClick="{{openElizaFsCheckins}}"><div class="eliza-history-item-title">Overdue relationship check-ins</div><div class="eliza-history-item-meta">Mon, Sep 22</div></div>
+                <div class="eliza-history-item" onClick="{{openElizaFsCash}}"><div class="eliza-history-item-title">Cash drag — Chen Family Account</div><div class="eliza-history-item-meta">Fri, Sep 19</div></div>
+              </div>
+              </sc-if>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div class="eliza-action-row" onClick="{{openElizaFsTaxloss}}" style="display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding:12px 5px;border-bottom:1px solid var(--border-row);">
+              <div style="display:flex;gap:11px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="M3 17l5-6 4 3 5-7 4 5"></path></svg>
+                <div>
+                  <div style="font-size:13.5px;font-weight:600;color:var(--text-primary);">Tax-loss harvesting opportunity — Vance-Whitaker Trust</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:3px;">$340K in unrealized losses available before year-end close.</div>
+                </div>
+              </div>
+              <span style="font-size:12.5px;color:var(--accent-bright);font-weight:600;white-space:nowrap;">Review →</span>
+            </div>
+            <div class="eliza-action-row" onClick="{{openElizaFsRebalance}}" style="display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding:12px 5px;border-bottom:1px solid var(--border-row);">
+              <div style="display:flex;gap:11px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9L2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+                <div>
+                  <div style="font-size:13.5px;font-weight:600;color:var(--text-primary);">Model drift — Growth &amp; Income model</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:3px;">+4.2% equity overweight vs. target across 14 accounts.</div>
+                </div>
+              </div>
+              <span style="font-size:12.5px;color:var(--accent-bright);font-weight:600;white-space:nowrap;">Rebalance →</span>
+            </div>
+            <div class="eliza-action-row" onClick="{{openElizaFsCheckins}}" style="display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding:12px 5px;border-bottom:1px solid var(--border-row);">
+              <div style="display:flex;gap:11px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="9" cy="8" r="3.2"></circle><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"></path><circle cx="17.5" cy="8.5" r="2.6"></circle><path d="M15.3 14.3c2.9.4 5.2 2.5 5.2 5.7"></path></svg>
+                <div>
+                  <div style="font-size:13.5px;font-weight:600;color:var(--text-primary);">3 relationships are overdue for a check-in</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:3px;">Isabel Ferreira &amp; Family, Samuel Reyes, and 1 other — no contact in 90+ days.</div>
+                </div>
+              </div>
+              <span style="font-size:12.5px;color:var(--accent-bright);font-weight:600;white-space:nowrap;">View list →</span>
+            </div>
+            <div class="eliza-action-row" onClick="{{openElizaFsCash}}" style="display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding:12px 5px;">
+              <div style="display:flex;gap:11px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><rect x="3" y="7" width="18" height="13" rx="1.5"></rect><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"></path></svg>
+                <div>
+                  <div style="font-size:13.5px;font-weight:600;color:var(--text-primary);">Cash drag — Chen Family Account</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:3px;">$680K in cash earning under 1% — consider a short-duration sweep.</div>
+                </div>
+              </div>
+              <span style="font-size:12.5px;color:var(--accent-bright);font-weight:600;white-space:nowrap;">Review →</span>
+            </div>
+          </div>
+
+          <div style="position:relative;margin-top:2px;">
+            <div class="eliza-inputbar">
+              <button type="button" class="eliza-plug-btn" aria-label="Connect agents" title="Connect agents" onClick="{{toggleElizaAgentPopCompact}}">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 3v4M15 3v4M6 7h12l-1 5a5 5 0 0 1-10 0L6 7z"></path><path d="M12 16v5"></path></svg>
+                <span class="eliza-plug-dot"></span>
+              </button>
+              <input type="text" placeholder="Ask Eliza about any client, account, or model…" aria-label="Ask Eliza" value="{{elizaCompactInput}}" onChange="{{onElizaCompactInputChange}}">
+              <button type="button" class="eliza-send-btn" aria-label="Send" onClick="{{sendElizaCompact}}" disabled="{{elizaCompactSendDisabled}}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              </button>
+            </div>
+            <sc-if value="{{elizaAgentPopCompactOpen}}" hint-placeholder-val="{{false}}">
+            <div class="eliza-agent-pop">
+              <div class="eliza-agent-pop-head">Connect agents to this chat</div>
+              <div class="eliza-agent-opt" onClick="{{toggleAgentSalesforce}}">
+                <div class="eliza-agent-icon" style="background:#00A1E0;color:#FFFFFF;">SF</div>
+                <div class="eliza-agent-label">Salesforce</div>
+                <div class="eliza-agent-toggle" style="{{agentSalesforceToggleStyle}}"></div>
+              </div>
+              <div class="eliza-agent-opt" onClick="{{toggleAgentMorningstar}}">
+                <div class="eliza-agent-icon" style="background:#FF7200;color:#06120F;">M</div>
+                <div class="eliza-agent-label">Morningstar</div>
+                <div class="eliza-agent-toggle" style="{{agentMorningstarToggleStyle}}"></div>
+              </div>
+              <div class="eliza-agent-opt" onClick="{{toggleAgentZocks}}">
+                <div class="eliza-agent-icon" style="background:#6C5CE7;color:#FFFFFF;">Z</div>
+                <div class="eliza-agent-label">zocks.io</div>
+                <div class="eliza-agent-toggle" style="{{agentZocksToggleStyle}}"></div>
+              </div>
+              <div class="eliza-agent-opt" onClick="{{toggleAgentAddepar}}">
+                <div class="eliza-agent-icon" style="background:#1F2937;color:#F2F3F3;">A</div>
+                <div class="eliza-agent-label">Addepar</div>
+                <div class="eliza-agent-toggle" style="{{agentAddeparToggleStyle}}"></div>
+              </div>
+              <div class="eliza-agent-opt" onClick="{{toggleAgentDocusign}}">
+                <div class="eliza-agent-icon" style="background:#FFC10E;color:#161616;">DS</div>
+                <div class="eliza-agent-label">DocuSign</div>
+                <div class="eliza-agent-toggle" style="{{agentDocusignToggleStyle}}"></div>
+              </div>
+              <div class="eliza-agent-opt" onClick="{{toggleAgentConquest}}">
+                <div class="eliza-agent-icon" style="background:#C0392B;color:#FFFFFF;">C</div>
+                <div class="eliza-agent-label">Conquest</div>
+                <div class="eliza-agent-toggle" style="{{agentConquestToggleStyle}}"></div>
+              </div>
+            </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <div style="font-size:16px;font-weight:600;color:var(--text-primary);">Connected AI Agents</div>
+            <div style="font-size:12.5px;color:var(--text-secondary);margin-top:3px;">Jump into your connected apps</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+            <div class="row-link" style="display:flex;flex-direction:column;gap:10px;padding:15px;border:1px solid var(--border-card);border-radius:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:#00A1E0;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;">SF</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Salesforce</div>
+                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:2px;">CRM</div>
+              </div>
+            </div>
+            <div class="row-link" style="display:flex;flex-direction:column;gap:10px;padding:15px;border:1px solid var(--border-card);border-radius:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:#FF7200;color:#06120F;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;">M</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Morningstar</div>
+                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:2px;">Research &amp; Ratings</div>
+              </div>
+            </div>
+            <div class="row-link" style="display:flex;flex-direction:column;gap:10px;padding:15px;border:1px solid var(--border-card);border-radius:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:#6C5CE7;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;">Z</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-primary);">zocks.io</div>
+                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:2px;">Meeting Intelligence</div>
+              </div>
+            </div>
+            <div class="row-link" style="display:flex;flex-direction:column;gap:10px;padding:15px;border:1px solid var(--border-card);border-radius:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:#1F2937;color:var(--text-primary);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;">A</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Addepar</div>
+                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:2px;">Portfolio Data</div>
+              </div>
+            </div>
+            <div class="row-link" style="display:flex;flex-direction:column;gap:10px;padding:15px;border:1px solid var(--border-card);border-radius:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:#FFC10E;color:#161616;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;">DS</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-primary);">DocuSign</div>
+                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:2px;">E-Signature</div>
+              </div>
+            </div>
+            <div class="row-link" style="display:flex;flex-direction:column;gap:10px;padding:15px;border:1px solid var(--border-card);border-radius:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:#C0392B;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;">C</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Conquest</div>
+                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:2px;">Financial planning</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><div style="display: grid; grid-template-columns: 1.7fr 1fr; gap: 22px;">
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:24px 0 10px;display:flex;flex-direction:column;">
+          <div style="font-size:16px;font-weight:600;color:var(--text-primary);padding:0 24px 16px;">Top Clients by AUM</div>
+          <div style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1fr 1.1fr;padding:0 24px 11px;font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid var(--border-strong);">
+            <div>CLIENTS</div><div>AUM</div><div>YTD</div><div>Accounts</div><div>Next Review</div>
+          </div>
+          <a href="ClientProfile.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1fr 1.1fr;padding:14px 24px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+            <div style="font-weight:600;color:var(--text-primary);">The Hartley Family Trust</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">$48.2M</div>
+            <div style="color:var(--positive);font-family:'IBM Plex Mono',monospace;">+7.4%</div>
+            <div style="color:var(--text-secondary);">6</div>
+            <div style="color:var(--text-secondary);">Oct 3, 2026</div>
+          </a>
+          <div class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1fr 1.1fr;padding:14px 24px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+            <div style="font-weight:600;color:var(--text-primary);">The Okafor Foundation</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">$91.0M</div>
+            <div style="color:var(--positive);font-family:'IBM Plex Mono',monospace;">+6.0%</div>
+            <div style="color:var(--text-secondary);">8</div>
+            <div style="color:var(--text-secondary);">Oct 22, 2026</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1fr 1.1fr;padding:14px 24px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+            <div style="font-weight:600;color:var(--text-primary);">Delacroix Holdings LLC</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">$22.4M</div>
+            <div style="color:var(--positive);font-family:'IBM Plex Mono',monospace;">+3.2%</div>
+            <div style="color:var(--text-secondary);">5</div>
+            <div style="color:var(--text-secondary);">Dec 1, 2026</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1fr 1.1fr;padding:14px 24px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+            <div style="font-weight:600;color:var(--text-primary);">The Vance-Whitaker Trust</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">$17.8M</div>
+            <div style="color:var(--negative);font-family:'IBM Plex Mono',monospace;">-1.2%</div>
+            <div style="color:var(--text-secondary);">4</div>
+            <div style="color:var(--warning);font-weight:600;">Today</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1fr 1.1fr;padding:14px 24px;align-items:center;font-size:14px;">
+            <div style="font-weight:600;color:var(--text-primary);">Eleanor Whitfield</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">$12.6M</div>
+            <div style="color:var(--positive);font-family:'IBM Plex Mono',monospace;">+5.1%</div>
+            <div style="color:var(--text-secondary);">3</div>
+            <div style="color:var(--text-secondary);">Nov 14, 2026</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:18px;min-height:0;">
+          <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px;flex-grow:1;overflow:hidden;">
+            <div style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">Reminders</div>
+            <div style="display:flex;flex-direction:column;gap:15px;">
+              <div style="display:flex;gap:11px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:var(--warning);margin-top:7px;flex-shrink:0;"></div>
+                <div>
+                  <div style="font-size:13.5px;color:var(--text-primary);">Quarterly review due — Hartley Family Trust</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);margin-top:3px;">Due Oct 3</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:11px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:var(--negative);margin-top:7px;flex-shrink:0;"></div>
+                <div>
+                  <div style="font-size:13.5px;color:var(--text-primary);">Cash balance exceeds threshold — Chen Family Account</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);margin-top:3px;">Flagged 2 hours ago</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:11px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:var(--warning);margin-top:7px;flex-shrink:0;"></div>
+                <div>
+                  <div style="font-size:13.5px;color:var(--text-primary);">Model drift — Growth &amp; Income model, +4.2% equity overweight</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);margin-top:3px;">Flagged yesterday</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:11px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:var(--positive);margin-top:7px;flex-shrink:0;"></div>
+                <div>
+                  <div style="font-size:13.5px;color:var(--text-primary);">3 trades awaiting compliance sign-off</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);margin-top:3px;">Submitted this morning</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="background:#062825;border:1px solid #0E4A44;border-radius:10px;padding:20px 22px;color:var(--text-primary);">
+            <div style="font-size:13px;color:var(--accent-bright);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:11px;">Market Snapshot</div>
+            <div style="display:flex;flex-direction:column;gap:9px;font-family:'IBM Plex Mono',monospace;font-size:13.5px;">
+              <div style="display:flex;justify-content:space-between;"><span>S&amp;P 500</span><span style="color:var(--positive);">5,842.1 ▲0.6%</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>10Y Treasury</span><span style="color:var(--negative-soft);">4.28% ▲3bp</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>Dollar Index</span><span style="color:var(--positive);">103.4 ▲0.1%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </main>
+  </div>
+
+      <sc-if value="{{elizaFsOpen}}" hint-placeholder-val="{{false}}">
+      <div class="eliza-fs-overlay">
+        <div class="eliza-fs-sidebar">
+          <div class="eliza-fs-sidebar-head">
+            <div class="eliza-fs-sidebar-brand">
+              <div style="width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#17BFB4,#7C5CFC);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg>
+              </div>
+              <span style="font-family:'Archivo',sans-serif;font-size:15.5px;font-weight:700;color:var(--text-primary);">Eliza</span>
+              <span style="background:rgba(124,92,252,0.16);color:#B9A8FF;font-size:11px;font-weight:600;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.04em;">AI</span>
+            </div>
+            <button type="button" class="eliza-fs-newchat" onClick="{{startElizaNewChat}}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+              New chat
+            </button>
+          </div>
+          <div class="eliza-fs-sidebar-list">
+            <div class="eliza-fs-sidebar-label">Today</div>
+            <div class="eliza-fs-hitem" style="{{fsHitemTaxlossStyle}}" onClick="{{openElizaFsTaxloss}}"><div class="eliza-fs-hitem-title">Tax-loss harvesting — Vance-Whitaker</div><div class="eliza-fs-hitem-meta">4:12 PM</div></div>
+            <div class="eliza-fs-hitem" style="{{fsHitemRebalanceStyle}}" onClick="{{openElizaFsRebalance}}"><div class="eliza-fs-hitem-title">Model drift review — Growth &amp; Income</div><div class="eliza-fs-hitem-meta">10:03 AM</div></div>
+            <div class="eliza-fs-sidebar-label">This week</div>
+            <div class="eliza-fs-hitem" style="{{fsHitemCheckinsStyle}}" onClick="{{openElizaFsCheckins}}"><div class="eliza-fs-hitem-title">Overdue relationship check-ins</div><div class="eliza-fs-hitem-meta">Mon, Sep 22</div></div>
+            <div class="eliza-fs-hitem" style="{{fsHitemCashStyle}}" onClick="{{openElizaFsCash}}"><div class="eliza-fs-hitem-title">Cash drag — Chen Family Account</div><div class="eliza-fs-hitem-meta">Fri, Sep 19</div></div>
+            <div class="eliza-fs-hitem"><div class="eliza-fs-hitem-title">Q3 review prep — Okafor Foundation</div><div class="eliza-fs-hitem-meta">Thu, Sep 18</div></div>
+            <div class="eliza-fs-hitem"><div class="eliza-fs-hitem-title">Compare custodial fee schedules</div><div class="eliza-fs-hitem-meta">Wed, Sep 17</div></div>
+          </div>
+        </div>
+
+        <div class="eliza-fs-main">
+          <div class="eliza-fs-topbar">
+            <div class="eliza-fs-topbar-left">
+              <span style="font-size:14px;font-weight:600;color:var(--text-secondary);">{{elizaThreadTitle}}</span>
+            </div>
+            <div class="eliza-fs-topbar-left">
+              <div style="display:flex;align-items:center;gap:7px;">
+                <sc-if value="{{agentSalesforceOn}}" hint-placeholder-val="{{true}}"><div class="eliza-agent-chip"><span class="dot" style="background:#00A1E0;color:#FFFFFF;">SF</span>Salesforce</div></sc-if>
+                <sc-if value="{{agentMorningstarOn}}" hint-placeholder-val="{{true}}"><div class="eliza-agent-chip"><span class="dot" style="background:#FF7200;color:#06120F;">M</span>Morningstar</div></sc-if>
+                <sc-if value="{{agentZocksOn}}" hint-placeholder-val="{{false}}"><div class="eliza-agent-chip"><span class="dot" style="background:#6C5CE7;color:#FFFFFF;">Z</span>zocks.io</div></sc-if>
+                <sc-if value="{{agentAddeparOn}}" hint-placeholder-val="{{true}}"><div class="eliza-agent-chip"><span class="dot" style="background:#1F2937;color:#F2F3F3;">A</span>Addepar</div></sc-if>
+                <sc-if value="{{agentDocusignOn}}" hint-placeholder-val="{{false}}"><div class="eliza-agent-chip"><span class="dot" style="background:#FFC10E;color:#161616;">DS</span>DocuSign</div></sc-if>
+                <sc-if value="{{agentConquestOn}}" hint-placeholder-val="{{false}}"><div class="eliza-agent-chip"><span class="dot" style="background:#C0392B;color:#FFFFFF;">C</span>Conquest</div></sc-if>
+              </div>
+              <div style="position:relative;">
+                <button type="button" class="eliza-connect-more-btn" onClick="{{toggleElizaAgentPopFs}}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>
+                  Connect agents
+                </button>
+                <sc-if value="{{elizaAgentPopFsOpen}}" hint-placeholder-val="{{false}}">
+                <div class="eliza-agent-pop fs">
+                  <div class="eliza-agent-pop-head">Connect agents to this chat</div>
+                  <div class="eliza-agent-opt" onClick="{{toggleAgentSalesforce}}">
+                    <div class="eliza-agent-icon" style="background:#00A1E0;color:#FFFFFF;">SF</div>
+                    <div class="eliza-agent-label">Salesforce</div>
+                    <div class="eliza-agent-toggle" style="{{agentSalesforceToggleStyle}}"></div>
+                  </div>
+                  <div class="eliza-agent-opt" onClick="{{toggleAgentMorningstar}}">
+                    <div class="eliza-agent-icon" style="background:#FF7200;color:#06120F;">M</div>
+                    <div class="eliza-agent-label">Morningstar</div>
+                    <div class="eliza-agent-toggle" style="{{agentMorningstarToggleStyle}}"></div>
+                  </div>
+                  <div class="eliza-agent-opt" onClick="{{toggleAgentZocks}}">
+                    <div class="eliza-agent-icon" style="background:#6C5CE7;color:#FFFFFF;">Z</div>
+                    <div class="eliza-agent-label">zocks.io</div>
+                    <div class="eliza-agent-toggle" style="{{agentZocksToggleStyle}}"></div>
+                  </div>
+                  <div class="eliza-agent-opt" onClick="{{toggleAgentAddepar}}">
+                    <div class="eliza-agent-icon" style="background:#1F2937;color:#F2F3F3;">A</div>
+                    <div class="eliza-agent-label">Addepar</div>
+                    <div class="eliza-agent-toggle" style="{{agentAddeparToggleStyle}}"></div>
+                  </div>
+                  <div class="eliza-agent-opt" onClick="{{toggleAgentDocusign}}">
+                    <div class="eliza-agent-icon" style="background:#FFC10E;color:#161616;">DS</div>
+                    <div class="eliza-agent-label">DocuSign</div>
+                    <div class="eliza-agent-toggle" style="{{agentDocusignToggleStyle}}"></div>
+                  </div>
+                  <div class="eliza-agent-opt" onClick="{{toggleAgentConquest}}">
+                    <div class="eliza-agent-icon" style="background:#C0392B;color:#FFFFFF;">C</div>
+                    <div class="eliza-agent-label">Conquest</div>
+                    <div class="eliza-agent-toggle" style="{{agentConquestToggleStyle}}"></div>
+                  </div>
+                </div>
+                </sc-if>
+              </div>
+              <button type="button" class="eliza-fs-close" aria-label="Exit full screen" title="Exit full screen" onClick="{{closeElizaFullscreen}}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="eliza-fs-chat">
+
+            <sc-if value="{{elizaThreadIsNone}}" hint-placeholder-val="{{true}}">
+            <div class="eliza-fs-empty">
+              <div class="eliza-fs-empty-avatar">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg>
+              </div>
+              <div class="eliza-fs-empty-title">What can I help with, Rachel?</div>
+              <div class="eliza-fs-empty-sub">Ask about any client, account, or model — or pick up where Eliza already flagged something.</div>
+              <div class="eliza-fs-suggest-grid">
+                <div class="eliza-fs-suggest-card" onClick="{{openElizaFsTaxloss}}">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><path d="M3 17l5-6 4 3 5-7 4 5"></path></svg>
+                  <div><div class="eliza-fs-suggest-title">Tax-loss harvesting — Vance-Whitaker</div><div class="eliza-fs-suggest-desc">$340K in unrealized losses available.</div></div>
+                </div>
+                <div class="eliza-fs-suggest-card" onClick="{{openElizaFsRebalance}}">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9L2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+                  <div><div class="eliza-fs-suggest-title">Model drift — Growth &amp; Income</div><div class="eliza-fs-suggest-desc">+4.2% equity overweight across 14 accounts.</div></div>
+                </div>
+                <div class="eliza-fs-suggest-card" onClick="{{openElizaFsCheckins}}">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><circle cx="9" cy="8" r="3.2"></circle><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"></path><circle cx="17.5" cy="8.5" r="2.6"></circle><path d="M15.3 14.3c2.9.4 5.2 2.5 5.2 5.7"></path></svg>
+                  <div><div class="eliza-fs-suggest-title">Overdue relationship check-ins</div><div class="eliza-fs-suggest-desc">3 relationships, 90+ days no contact.</div></div>
+                </div>
+                <div class="eliza-fs-suggest-card" onClick="{{openElizaFsCash}}">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><rect x="3" y="7" width="18" height="13" rx="1.5"></rect><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"></path></svg>
+                  <div><div class="eliza-fs-suggest-title">Cash drag — Chen Family Account</div><div class="eliza-fs-suggest-desc">$680K earning under 1%.</div></div>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{elizaThreadIsTaxloss}}" hint-placeholder-val="{{false}}">
+            <div class="eliza-fs-chat-inner">
+              <div class="eliza-msg user"><div class="eliza-msg-avatar">RM</div><div class="eliza-msg-bubble">What tax-loss harvesting opportunities do we have in the Vance-Whitaker Trust before year-end?</div></div>
+              <div class="eliza-msg assistant">
+                <div class="eliza-msg-avatar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg></div>
+                <div class="eliza-msg-bubble">
+                  The Vance-Whitaker Trust has <strong>$340K in unrealized losses</strong> available to harvest before the year-end close, concentrated in two positions:
+                  <ul>
+                    <li><strong>Regional bank preferred shares</strong> — $210K unrealized loss, no wash-sale conflicts</li>
+                    <li><strong>Mid-cap REIT allocation</strong> — $130K unrealized loss, replacement candidate available</li>
+                  </ul>
+                  Harvesting both would offset realized gains elsewhere in the account without materially changing the portfolio's risk profile.
+                  <div class="eliza-msg-source-card">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3v4M15 3v4M6 7h12l-1 5a5 5 0 0 1-10 0L6 7z"></path><path d="M12 16v5"></path></svg>
+                    Source: Addepar · Portfolio Data
+                  </div>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{elizaThreadIsRebalance}}" hint-placeholder-val="{{false}}">
+            <div class="eliza-fs-chat-inner">
+              <div class="eliza-msg user"><div class="eliza-msg-avatar">RM</div><div class="eliza-msg-bubble">Which accounts are furthest off-target in the Growth &amp; Income model?</div></div>
+              <div class="eliza-msg assistant">
+                <div class="eliza-msg-avatar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg></div>
+                <div class="eliza-msg-bubble">
+                  14 accounts are running <strong>+4.2% equity overweight</strong> vs. target. The three furthest off-target are the Delacroix Holdings LLC account (+7.1%), the Whitfield IRA (+6.4%), and the Reyes Family Trust (+5.8%). I can draft rebalancing trades to bring all 14 back within tolerance.
+                  <div class="eliza-msg-source-card">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3v4M15 3v4M6 7h12l-1 5a5 5 0 0 1-10 0L6 7z"></path><path d="M12 16v5"></path></svg>
+                    Source: Morningstar · Model Analytics
+                  </div>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{elizaThreadIsCheckins}}" hint-placeholder-val="{{false}}">
+            <div class="eliza-fs-chat-inner">
+              <div class="eliza-msg user"><div class="eliza-msg-avatar">RM</div><div class="eliza-msg-bubble">Who haven't we talked to in a while?</div></div>
+              <div class="eliza-msg assistant">
+                <div class="eliza-msg-avatar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg></div>
+                <div class="eliza-msg-bubble">
+                  3 relationships are overdue for a check-in (no contact in 90+ days): <strong>Isabel Ferreira &amp; Family</strong>, <strong>Samuel Reyes</strong>, and one other. I can draft outreach emails or find times on your calendar for all three.
+                  <div class="eliza-msg-source-card">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3v4M15 3v4M6 7h12l-1 5a5 5 0 0 1-10 0L6 7z"></path><path d="M12 16v5"></path></svg>
+                    Source: Salesforce · Activity History
+                  </div>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{elizaThreadIsCash}}" hint-placeholder-val="{{false}}">
+            <div class="eliza-fs-chat-inner">
+              <div class="eliza-msg user"><div class="eliza-msg-avatar">RM</div><div class="eliza-msg-bubble">How much cash is sitting idle in the Chen account?</div></div>
+              <div class="eliza-msg assistant">
+                <div class="eliza-msg-avatar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg></div>
+                <div class="eliza-msg-bubble">
+                  The Chen Family Account is holding <strong>$680K in cash</strong> earning under 1%. Moving it into a short-duration Treasury sweep at current rates would add roughly $24K in annual income with minimal duration risk.
+                  <div class="eliza-msg-source-card">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3v4M15 3v4M6 7h12l-1 5a5 5 0 0 1-10 0L6 7z"></path><path d="M12 16v5"></path></svg>
+                    Source: Addepar · Cash Positions
+                  </div>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{elizaHasComposedMessages}}" hint-placeholder-val="{{false}}">
+            <div class="eliza-fs-chat-inner">
+              <sc-for list="{{elizaComposedMessages}}" as="cmsg" hint-placeholder-count="2">
+                <sc-if value="{{cmsg.isUser}}" hint-placeholder-val="{{true}}">
+                <div class="eliza-msg user"><div class="eliza-msg-avatar">RM</div><div class="eliza-msg-bubble">{{cmsg.text}}</div></div>
+                </sc-if>
+                <sc-if value="{{cmsg.isAssistant}}" hint-placeholder-val="{{false}}">
+                <div class="eliza-msg assistant">
+                  <div class="eliza-msg-avatar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg></div>
+                  <div class="eliza-msg-bubble">{{cmsg.text}}</div>
+                </div>
+                </sc-if>
+              </sc-for>
+              <sc-if value="{{elizaTyping}}" hint-placeholder-val="{{false}}">
+              <div class="eliza-msg assistant">
+                <div class="eliza-msg-avatar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06120F" stroke-width="2"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z"></path></svg></div>
+                <div class="eliza-msg-bubble"><div class="eliza-typing-dots"><span></span><span></span><span></span></div></div>
+              </div>
+              </sc-if>
+            </div>
+            </sc-if>
+
+          </div>
+
+          <div class="eliza-fs-inputwrap">
+            <div class="eliza-fs-inputbar-outer">
+              <div class="eliza-fs-inputbar">
+                <button type="button" class="eliza-plug-btn" aria-label="Connect agents" title="Connect agents" onClick="{{toggleElizaAgentPopFs}}">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 3v4M15 3v4M6 7h12l-1 5a5 5 0 0 1-10 0L6 7z"></path><path d="M12 16v5"></path></svg>
+                  <span class="eliza-plug-dot"></span>
+                </button>
+                <input type="text" placeholder="Ask Eliza about any client, account, or model…" aria-label="Ask Eliza" value="{{elizaFsInput}}" onChange="{{onElizaFsInputChange}}">
+                <button type="button" class="eliza-send-btn" aria-label="Send" onClick="{{sendElizaFs}}" disabled="{{elizaFsSendDisabled}}">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                </button>
+              </div>
+              <div class="eliza-fs-input-note">Eliza can access account, client, and model data you're permissioned for. Responses may need verification.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1580}}'>
+class Component extends DCLogic {
+  state = { theme: 'dark', navExpanded: true, elizaFsOpen: false, elizaHistoryOpen: false, elizaActiveThread: 'none', elizaAgentPopCompactOpen: false, elizaAgentPopFsOpen: false, elizaCompactInput: '', elizaFsInput: '', elizaComposedMessages: [], elizaTyping: false, agentSalesforceOn: true, agentMorningstarOn: true, agentZocksOn: false, agentAddeparOn: true, agentDocusignOn: false, agentConquestOn: false };
+
+  toggleTheme() {
+    this.setState({ theme: this.state.theme === 'dark' ? 'light' : 'dark' });
+  }
+
+  toggleNav() {
+    this.setState({ navExpanded: !this.state.navExpanded });
+  }
+
+  toggleElizaHistory() {
+    this.setState({ elizaHistoryOpen: !this.state.elizaHistoryOpen });
+  }
+
+  openElizaFullscreen(threadKey) {
+    this.setState({
+      elizaFsOpen: true,
+      elizaActiveThread: threadKey,
+      elizaHistoryOpen: false,
+      elizaAgentPopCompactOpen: false,
+      elizaAgentPopFsOpen: false,
+      elizaComposedMessages: [],
+      elizaTyping: false,
+    });
+  }
+
+  closeElizaFullscreen() {
+    this.setState({ elizaFsOpen: false, elizaAgentPopFsOpen: false });
+  }
+
+  startElizaNewChat() {
+    this.setState({ elizaActiveThread: 'none', elizaComposedMessages: [], elizaTyping: false });
+  }
+
+  toggleElizaAgentPopCompact() {
+    this.setState({ elizaAgentPopCompactOpen: !this.state.elizaAgentPopCompactOpen, elizaAgentPopFsOpen: false });
+  }
+
+  toggleElizaAgentPopFs() {
+    this.setState({ elizaAgentPopFsOpen: !this.state.elizaAgentPopFsOpen, elizaAgentPopCompactOpen: false });
+  }
+
+  toggleAgent(field) {
+    this.setState({ [field]: !this.state[field] });
+  }
+
+  setElizaCompactInput(v) {
+    this.setState({ elizaCompactInput: v });
+  }
+
+  setElizaFsInput(v) {
+    this.setState({ elizaFsInput: v });
+  }
+
+  sendElizaMessage(text) {
+    const val = (text || '').trim();
+    if (!val) return;
+    const newMsgs = [...(this.state.elizaComposedMessages || []), { role: 'user', text: val }];
+    this.setState({
+      elizaFsOpen: true,
+      elizaComposedMessages: newMsgs,
+      elizaCompactInput: '',
+      elizaFsInput: '',
+      elizaTyping: true,
+    });
+    setTimeout(() => {
+      const replied = [...this.state.elizaComposedMessages, {
+        role: 'assistant',
+        text: "Here's what I'm seeing — this is a preview reply so you can see the conversation flow; the production version will pull live figures from your connected apps.",
+      }];
+      this.setState({ elizaComposedMessages: replied, elizaTyping: false });
+    }, 950);
+  }
+
+  renderVals() {
+    const theme = this.state.theme ?? 'dark';
+    const navExpanded = this.state.navExpanded ?? true;
+
+    const elizaFsOpen = this.state.elizaFsOpen ?? false;
+    const elizaHistoryOpen = this.state.elizaHistoryOpen ?? false;
+    const elizaActiveThread = this.state.elizaActiveThread ?? 'none';
+    const elizaAgentPopCompactOpen = this.state.elizaAgentPopCompactOpen ?? false;
+    const elizaAgentPopFsOpen = this.state.elizaAgentPopFsOpen ?? false;
+    const elizaCompactInput = this.state.elizaCompactInput ?? '';
+    const elizaFsInput = this.state.elizaFsInput ?? '';
+    const elizaComposedMessages = this.state.elizaComposedMessages ?? [];
+    const elizaTyping = this.state.elizaTyping ?? false;
+    const agentSalesforceOn = this.state.agentSalesforceOn ?? true;
+    const agentMorningstarOn = this.state.agentMorningstarOn ?? true;
+    const agentZocksOn = this.state.agentZocksOn ?? false;
+    const agentAddeparOn = this.state.agentAddeparOn ?? true;
+    const agentDocusignOn = this.state.agentDocusignOn ?? false;
+    const agentConquestOn = this.state.agentConquestOn ?? false;
+
+    const THREAD_TITLES = {
+      none: 'New chat',
+      taxloss: 'Tax-loss harvesting — Vance-Whitaker',
+      rebalance: 'Model drift review — Growth & Income',
+      checkins: 'Overdue relationship check-ins',
+      cash: 'Cash drag — Chen Family Account',
+    };
+
+    const toggleStyle = (on) => `background:${on ? 'var(--accent-bright)' : 'var(--border-strong)'};`;
+    const fsHitemStyle = (key) => `background:${elizaActiveThread === key ? 'rgba(45,212,199,0.12)' : 'transparent'};`;
+
+    const elizaComposedMessagesView = elizaComposedMessages.map((m) => ({
+      text: m.text,
+      isUser: m.role === 'user',
+      isAssistant: m.role === 'assistant',
+    }));
+
+    return {
+      theme,
+      isDark: theme === 'dark',
+      isLight: theme === 'light',
+      navExpanded,
+      navCollapsed: !navExpanded,
+      toggleTheme: () => this.toggleTheme(),
+      toggleNav: () => this.toggleNav(),
+      sidebarStyle: `width:${navExpanded ? '262px' : '82px'};flex-shrink:0;background:var(--bg-sidebar);color:var(--text-primary);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;align-self:flex-start;transition:width 0.18s ease;overflow:hidden;`,
+      sidebarFooterPad: navExpanded ? '20px' : '8px',
+      sidebarFooterJustify: navExpanded ? 'flex-start' : 'center',
+      navToggleIconTransform: navExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
+      elizaFsOpen,
+      elizaHistoryOpen,
+      toggleElizaHistory: () => this.toggleElizaHistory(),
+      openElizaFsNew: () => this.openElizaFullscreen('none'),
+      openElizaFsTaxloss: () => this.openElizaFullscreen('taxloss'),
+      openElizaFsRebalance: () => this.openElizaFullscreen('rebalance'),
+      openElizaFsCheckins: () => this.openElizaFullscreen('checkins'),
+      openElizaFsCash: () => this.openElizaFullscreen('cash'),
+      closeElizaFullscreen: () => this.closeElizaFullscreen(),
+      startElizaNewChat: () => this.startElizaNewChat(),
+      elizaThreadTitle: THREAD_TITLES[elizaActiveThread] || 'New chat',
+      elizaThreadIsNone: elizaActiveThread === 'none',
+      elizaThreadIsTaxloss: elizaActiveThread === 'taxloss',
+      elizaThreadIsRebalance: elizaActiveThread === 'rebalance',
+      elizaThreadIsCheckins: elizaActiveThread === 'checkins',
+      elizaThreadIsCash: elizaActiveThread === 'cash',
+      fsHitemTaxlossStyle: fsHitemStyle('taxloss'),
+      fsHitemRebalanceStyle: fsHitemStyle('rebalance'),
+      fsHitemCheckinsStyle: fsHitemStyle('checkins'),
+      fsHitemCashStyle: fsHitemStyle('cash'),
+      elizaAgentPopCompactOpen,
+      elizaAgentPopFsOpen,
+      toggleElizaAgentPopCompact: () => this.toggleElizaAgentPopCompact(),
+      toggleElizaAgentPopFs: () => this.toggleElizaAgentPopFs(),
+      agentSalesforceOn,
+      agentMorningstarOn,
+      agentZocksOn,
+      agentAddeparOn,
+      agentDocusignOn,
+      agentConquestOn,
+      agentSalesforceToggleStyle: toggleStyle(agentSalesforceOn),
+      agentMorningstarToggleStyle: toggleStyle(agentMorningstarOn),
+      agentZocksToggleStyle: toggleStyle(agentZocksOn),
+      agentAddeparToggleStyle: toggleStyle(agentAddeparOn),
+      agentDocusignToggleStyle: toggleStyle(agentDocusignOn),
+      agentConquestToggleStyle: toggleStyle(agentConquestOn),
+      toggleAgentSalesforce: () => this.toggleAgent('agentSalesforceOn'),
+      toggleAgentMorningstar: () => this.toggleAgent('agentMorningstarOn'),
+      toggleAgentZocks: () => this.toggleAgent('agentZocksOn'),
+      toggleAgentAddepar: () => this.toggleAgent('agentAddeparOn'),
+      toggleAgentDocusign: () => this.toggleAgent('agentDocusignOn'),
+      toggleAgentConquest: () => this.toggleAgent('agentConquestOn'),
+      elizaCompactInput,
+      onElizaCompactInputChange: (e) => this.setElizaCompactInput(e.target.value),
+      elizaCompactSendDisabled: elizaCompactInput.trim().length === 0,
+      sendElizaCompact: () => this.sendElizaMessage(this.state.elizaCompactInput),
+      elizaFsInput,
+      onElizaFsInputChange: (e) => this.setElizaFsInput(e.target.value),
+      elizaFsSendDisabled: elizaFsInput.trim().length === 0,
+      sendElizaFs: () => this.sendElizaMessage(this.state.elizaFsInput),
+      elizaComposedMessages: elizaComposedMessagesView,
+      elizaHasComposedMessages: elizaComposedMessagesView.length > 0,
+      elizaTyping,
+    };
+  }
+}
+</script>
+</body>
+</html>

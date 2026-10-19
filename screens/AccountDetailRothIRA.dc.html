@@ -1,0 +1,1551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Account Overview — Roth IRA</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+
+  :root {
+    --bg-page: #0A0C0E;
+    --bg-sidebar: #000000;
+    --bg-card: #14171A;
+    --bg-subtle: #171B1E;
+    --bg-header: #0E1113;
+    --border-row: #1B1F23;
+    --border-strong: #21252A;
+    --border-card: #262B2F;
+    --text-primary: #F2F3F3;
+    --text-secondary: #9BA1A6;
+    --text-tertiary: #6B7278;
+    --text-nav-inactive: #ADB4B9;
+    --text-dim: #5C6368;
+    --text-faint: #40464C;
+    --nav-active-text: #E8FBF9;
+    --positive: #34D399;
+    --negative: #FF7A6E;
+    --negative-soft: #FF9F94;
+    --warning: #E3A438;
+    --accent-bright: #2DD4C7;
+    --divider-on-dark: rgba(255,255,255,0.10);
+    --nav-hover-bg: rgba(255,255,255,0.06);
+  }
+  [data-theme="light"] {
+    --bg-page: #F4F5F6;
+    --bg-sidebar: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F1F3F5;
+    --bg-header: #FFFFFF;
+    --border-row: #ECEEF0;
+    --border-strong: #E3E6E9;
+    --border-card: #DEE2E6;
+    --text-primary: #161A1D;
+    --text-secondary: #5B6268;
+    --text-tertiary: #747C83;
+    --text-nav-inactive: #5B6268;
+    --text-dim: #9AA1A7;
+    --text-faint: #C7CBCF;
+    --nav-active-text: #0B7A70;
+    --positive: #0E9F6E;
+    --negative: #E14A3E;
+    --negative-soft: #D96A61;
+    --warning: #96690C;
+    --accent-bright: #0E9187;
+    --divider-on-dark: rgba(10,12,14,0.10);
+    --nav-hover-bg: rgba(10,12,14,0.045);
+  }
+
+  body { margin:0; font-family:'IBM Plex Sans',sans-serif; background:var(--bg-page); color:var(--text-primary); }
+  a { color:inherit; text-decoration:none; }
+  .nav-item:hover { background: var(--nav-hover-bg); }
+  .back-link:hover { color:var(--accent-bright); }
+  .tab-link:hover { color:var(--accent-bright); }
+  .row-link { transition: background 0.12s ease; }
+  .row-link:hover { background:var(--border-row); }
+  ::selection { background: rgba(23,191,180,0.28); }
+
+  .xfer-overlay{position:fixed;inset:0;background:rgba(4,6,7,0.68);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;}
+  .xfer-dialog{width:100%;max-width:620px;max-height:92vh;overflow-y:auto;background:var(--bg-card);border:1px solid var(--border-strong,#33393F);border-radius:14px;box-shadow:0 24px 64px rgba(0,0,0,0.55);display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;}
+  .xfer-header{display:flex;align-items:flex-start;justify-content:space-between;padding:24px 26px 18px;border-bottom:1px solid var(--border-card);flex-shrink:0;}
+  .xfer-title{font-family:'Archivo',sans-serif;font-size:19px;font-weight:700;color:var(--text-primary);}
+  .xfer-subtitle{font-size:13px;color:var(--text-secondary);margin-top:4px;}
+  .xfer-close{background:none;border:none;color:var(--text-secondary);cursor:pointer;padding:4px;border-radius:6px;display:flex;}
+  .xfer-close:hover{background:rgba(255,255,255,0.06);color:var(--text-primary);}
+  .xfer-body{padding:22px 26px;display:flex;flex-direction:column;gap:20px;}
+  .xfer-field-group{display:flex;flex-direction:column;gap:7px;}
+  .xfer-label{font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.03em;}
+  .xfer-sublabel{font-size:11.5px;color:var(--text-tertiary);font-weight:500;margin-top:8px;margin-bottom:2px;}
+  .xfer-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .xfer-select-wrap{position:relative;}
+  .xfer-select-wrap select{appearance:none;-webkit-appearance:none;width:100%;height:46px;border-radius:9px;border:1px solid var(--border-card);background:#0E1113;padding:0 40px 0 14px;font-size:14.5px;color:var(--text-primary);font-family:'IBM Plex Sans',sans-serif;cursor:pointer;}
+  .xfer-select-wrap select:focus{outline:none;border-color:var(--accent-bright,#2DD4C7);}
+  .xfer-select-caret{position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-tertiary);}
+  .xfer-meta{font-size:12px;color:var(--text-tertiary);margin-top:2px;}
+  .xfer-swap{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--border-card);background:#0E1113;color:var(--text-secondary);cursor:pointer;margin:-6px auto -6px;position:relative;z-index:2;}
+  .xfer-swap:hover{color:var(--accent-bright,#2DD4C7);border-color:var(--accent-bright,#2DD4C7);}
+  .xfer-method-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+  .xfer-logic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+  .xfer-option{border-radius:9px;padding:12px 10px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:3px;border:1px solid var(--border-card);background:#0E1113;}
+  .xfer-option-name{font-size:13px;font-weight:700;}
+  .xfer-option-desc{font-size:11px;color:var(--text-tertiary);line-height:1.35;}
+  .xfer-segmented{display:flex;border:1px solid var(--border-card);border-radius:9px;overflow:hidden;background:#0E1113;}
+  .xfer-segmented button{flex:1;background:none;border:none;border-right:1px solid var(--border-card);font-size:13.5px;font-weight:600;padding:11px 10px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;}
+  .xfer-segmented button:last-child{border-right:none;}
+  .xfer-recurring-panel{border:1px solid var(--border-card);border-radius:10px;padding:18px;background:rgba(255,255,255,0.015);display:flex;flex-direction:column;gap:18px;}
+  .xfer-date-input,.xfer-number-input{width:100%;box-sizing:border-box;height:46px;border-radius:9px;border:1px solid var(--border-card);background:#0E1113;padding:0 14px;font-size:14px;color:var(--text-primary);font-family:'IBM Plex Sans',sans-serif;color-scheme:dark;}
+  .xfer-cadence-note{display:flex;align-items:center;gap:8px;height:46px;padding:0 14px;border-radius:9px;border:1px dashed var(--border-strong,#33393F);color:var(--text-secondary);font-size:13px;}
+  .xfer-amount-wrap{display:flex;align-items:center;border:1px solid var(--border-card);background:#0E1113;border-radius:9px;padding:0 16px;height:58px;}
+  .xfer-amount-currency{font-family:'IBM Plex Mono',monospace;font-size:24px;color:var(--text-tertiary);margin-right:8px;}
+  .xfer-amount-input{border:none;background:none;outline:none;color:var(--text-primary);font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;width:100%;}
+  .xfer-amount-footer{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--text-tertiary);}
+  .xfer-amount-max{color:var(--accent-bright,#2DD4C7);font-weight:600;cursor:pointer;background:none;border:none;padding:0;font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;}
+  .xfer-threshold-wrap{display:flex;align-items:center;border:1px solid var(--border-card);background:#0E1113;border-radius:9px;padding:0 14px;height:50px;}
+  .xfer-threshold-currency{font-family:'IBM Plex Mono',monospace;font-size:17px;color:var(--text-tertiary);margin-right:6px;}
+  .xfer-threshold-input{border:none;background:none;outline:none;color:var(--text-primary);font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:600;width:100%;}
+  .xfer-threshold-help{font-size:11.5px;color:var(--text-tertiary);line-height:1.5;}
+  .xfer-info-panel{border-radius:10px;padding:14px 16px;display:flex;gap:11px;align-items:flex-start;border:1px solid;}
+  .xfer-info-panel.info{background:rgba(45,212,199,0.06);border-color:rgba(45,212,199,0.28);}
+  .xfer-info-panel.warning{background:rgba(227,164,56,0.08);border-color:rgba(227,164,56,0.35);}
+  .xfer-info-panel.error{background:rgba(255,122,110,0.08);border-color:rgba(255,122,110,0.35);}
+  .xfer-info-text{font-size:12.5px;line-height:1.55;color:var(--text-primary);}
+  .xfer-info-row{display:flex;justify-content:space-between;gap:12px;padding:2px 0;}
+  .xfer-info-row .k{color:var(--text-secondary);}
+  .xfer-info-row .v{font-weight:600;text-align:right;}
+  .xfer-memo{width:100%;min-height:60px;resize:vertical;border-radius:9px;border:1px solid var(--border-card);background:#0E1113;padding:12px 14px;font-size:13.5px;color:var(--text-primary);font-family:'IBM Plex Sans',sans-serif;}
+  .xfer-footer{display:flex;align-items:center;justify-content:space-between;padding:18px 26px 24px;border-top:1px solid var(--border-card);flex-shrink:0;gap:14px;}
+  .xfer-footer-note{font-size:11.5px;color:var(--text-tertiary);}
+  .xfer-footer-actions{display:flex;gap:10px;}
+  .xfer-btn{border-radius:8px;padding:11px 20px;font-size:14.5px;font-weight:600;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;white-space:nowrap;}
+  .xfer-btn-cancel{background:none;color:var(--text-secondary);border:1px solid var(--border-card);}
+  .xfer-btn-review{background:#17BFB4;color:#06120F;border:none;display:flex;align-items:center;gap:8px;}
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width:100%;min-height:100vh;box-sizing:border-box;display:flex;background:var(--bg-page);">
+
+  <aside style="{{sidebarStyle}}">
+    <div style="padding:25px 18px 20px;border-bottom:1px solid var(--divider-on-dark);display:flex;align-items:flex-start;justify-content:space-between;gap:7px;">
+      <div style="min-width:0;overflow:hidden;">
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">
+          <div style="font-family:'Archivo',sans-serif;font-size:23.5px;font-weight:700;letter-spacing:0.01em;color:var(--text-primary);white-space:nowrap;">Future Firm</div>
+          <div style="font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:var(--accent-bright);margin-top:6px;white-space:nowrap;">BNY WEALTH SERVICES</div>
+        </sc-if>
+      </div>
+      <button aria-label="Collapse navigation" onClick="{{toggleNav}}" style="flex-shrink:0;background:none;border:1px solid var(--divider-on-dark);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);margin-top:3px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="transform:{{navToggleIconTransform}};transition:transform 0.18s ease;"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+    </div>
+    <nav style="flex-grow:1;padding:20px 13px;display:flex;flex-direction:column;gap:3px;">
+      <a href="Dashboard.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Dashboard</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Custody Book</div></sc-if></div>
+      <a href="AccountList.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;background:rgba(23,191,180,0.16);color:var(--nav-active-text);font-size:15px;font-weight:600;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="7" width="18" height="13" rx="1.5"></rect><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Accounts</sc-if>
+      </a>
+      <a href="ClientList.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3.2"></circle><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"></path><circle cx="17.5" cy="8.5" r="2.6"></circle><path d="M15.3 14.3c2.9.4 5.2 2.5 5.2 5.7"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Clients</sc-if>
+      </a>
+      <a href="Groups.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="9" r="5"></circle><circle cx="16" cy="9" r="5"></circle><circle cx="12" cy="16.5" r="5"></circle></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Groups</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Managed</div></sc-if></div>
+      <a href="ModelPortfolios.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l9 5-9 5-9-5 9-5z"></path><path d="M3 13l9 5 9-5"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Portfolios</sc-if>
+      </a>
+      <a href="Trading.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h10l-3-3M20 17H10l3 3"></path><path d="M4 7v6M20 17v-6"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><span style="flex-grow:1;">Trading</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><path d="M15 3h6v6"></path><path d="M10 14L21 3"></path></svg></sc-if>
+      </a>
+      <a href="Markets.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17l5-6 4 3 5-7 4 5"></path><path d="M3 21h18"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Markets</sc-if>
+      </a>
+      <a href="Alternatives.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"></rect><rect x="13" y="3" width="8" height="8" rx="1.5"></rect><rect x="3" y="13" width="8" height="8" rx="1.5"></rect><rect x="13" y="13" width="8" height="8" rx="1.5"></rect></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Alternatives</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Operations</div></sc-if></div>
+      <a href="Reports.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4M9 12h6M9 16h6"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><span style="flex-grow:1;">Reports</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><path d="M15 3h6v6"></path><path d="M10 14L21 3"></path></svg></sc-if>
+      </a>
+      <a href="Workflows.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 6h11M9 12h11M9 18h11"></path><path d="M4.5 6l1 1 2-2M4.5 12l1 1 2-2M4.5 18l1 1 2-2"></path></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Workflows</sc-if>
+      </a>
+    </nav>
+    <div style="padding:18px {{sidebarFooterPad}};border-top:1px solid var(--divider-on-dark);display:flex;align-items:center;justify-content:{{sidebarFooterJustify}};gap:13px;">
+      <div style="width:38px;height:38px;border-radius:50%;background:#17BFB4;color:#06120F;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14.5px;flex-shrink:0;">RM</div>
+      <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">
+        <div style="min-width:0;flex-grow:1;">
+          <div style="font-size:14.5px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Rachel Moreno</div>
+          <div style="font-size:12.5px;color:var(--text-secondary);">Senior Advisor</div>
+        </div>
+      </sc-if>
+    </div>
+  </aside>
+
+  <div style="flex-grow:1;min-width:0;display:flex;flex-direction:column;height:100%;">
+    <header style="height:78px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 38px;border-bottom:1px solid var(--border-card);background:var(--bg-header);">
+      <div style="font-size:14.5px;color:var(--text-secondary);">
+        <a href="Dashboard.dc.html">Wealth Platform</a><span style="margin:0 9px;color:var(--text-faint);">/</span><a href="ClientList.dc.html">Clients</a><span style="margin:0 9px;color:var(--text-faint);">/</span><a href="ClientProfile.dc.html">The Hartley Family Trust</a><span style="margin:0 9px;color:var(--text-faint);">/</span><span style="color:var(--text-primary);font-weight:600;">Roth IRA</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:25px;">
+        <div style="position:relative;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.8" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+          <input type="text" placeholder="Search clients, accounts, securities…" aria-label="Global search" style="width:320px;height:38px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-card);padding:0 16px 0 43px;font-size:14.5px;color:var(--text-primary);font-family:'IBM Plex Sans',sans-serif;">
+        </div>
+        <button aria-label="Toggle color theme" onClick="{{toggleTheme}}" style="background:none;border:1px solid var(--border-card);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);flex-shrink:0;">
+          <sc-if value="{{isDark}}" hint-placeholder-val="{{true}}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"></path></svg>
+          </sc-if>
+          <sc-if value="{{isLight}}" hint-placeholder-val="{{false}}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"></path></svg>
+          </sc-if>
+        </button>
+        <button aria-label="Notifications" style="position:relative;background:none;border:none;cursor:pointer;padding:5px;color:var(--text-secondary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg>
+          <span style="position:absolute;top:2px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--negative);"></span>
+        </button>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--text-secondary);">Thu, Sep 17, 2026</div>
+      </div>
+    </header>
+
+    <main style="flex-grow:1;overflow:hidden;padding:36px;display:flex;flex-direction:column;gap:22px;">
+
+      <a href="ClientProfile.dc.html" class="back-link" style="display:flex;align-items:center;gap:7px;font-size:14px;color:var(--text-tertiary);width:fit-content;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+        Back to The Hartley Family Trust
+      </a>
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+        <div>
+          <div style="font-family:'Archivo',sans-serif;font-size:31.5px;font-weight:700;color:var(--text-primary);">Roth IRA</div>
+          <div style="display:flex;align-items:center;gap:11px;margin-top:9px;font-size:14px;color:var(--text-secondary);"><span style="font-family: &quot;IBM Plex Mono&quot;, monospace">•••• 5512</span>
+            <span style="color: var(--text-faint)">·</span>BNY Pershing<span style="color: var(--text-faint)">·</span>
+            <span>Individual Retirement — Roth</span>
+            <span style="color: var(--text-faint)">·</span>
+            <span>Eleanor Hartley</span>
+            <span style="background: rgba(52, 211, 153, 0.14); color: rgb(52, 211, 153); font-size: 12.5px; font-weight: 600; padding: 4px 10px; border-radius: 100px; margin-left: 3px">&nbsp;Non-managed</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:11px;">
+          <button onClick="{{openTransfer}}" style="background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border-card);border-radius:8px;padding:11px 20px;font-size:14.5px;font-weight:600;cursor:pointer;">Transfer Funds</button>
+          <a href="ModelPortfolios.dc.html" style="background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border-card);border-radius:8px;padding:11px 20px;font-size:14.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;">Apply Model</a>
+          <button style="background:#17BFB4;color:#06120F;border:none;border-radius:8px;padding:11px 20px;font-size:14.5px;font-weight:600;cursor:pointer;">New Trade</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:31px;border-bottom:1px solid var(--border-card);">
+        <div onClick="{{selectOverviewTab}}" style="{{tabOverviewStyle}}">Overview</div>
+        <div style="padding:11px 3px;font-size:15px;color:var(--text-tertiary);">Holdings</div>
+        <div onClick="{{selectTransactionsTab}}" style="{{tabTransactionsStyle}}">Transactions</div>
+        <div onClick="{{selectDocumentsTab}}" style="{{tabDocumentsStyle}}">Documents</div>
+      </div>
+
+      <sc-if value="{{isOverviewTab}}" hint-placeholder-val="{{true}}">
+      <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px 25px;">
+        <div>
+          <div style="font-size:13px;color:var(--text-tertiary);">Market Value</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--text-primary);margin-top:5px;">$3,096,480</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text-tertiary);">Total Cost Basis</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--text-primary);margin-top:5px;">$2,184,900</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text-tertiary);">Unrealized G/L</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--positive);margin-top:5px;">+$911,580</div>
+          <div style="font-size:12.5px;color:var(--positive);margin-top:2px;">+41.7%</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text-tertiary);">Realized G/L (YTD)</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--positive);margin-top:5px;">+$38,240</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text-tertiary);">TWR (YTD)</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--text-primary);margin-top:5px;">+13.6%</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text-tertiary);">MWR (YTD)</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--text-primary);margin-top:5px;">+13.1%</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:25px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+          <div>
+            <div style="font-size:16px;font-weight:600;color:var(--text-primary);">Account Value — Trailing 12 Months</div>
+            <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px;">Month-end market value, Oct 2025 – Sep 2026</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:22.5px;font-weight:600;color:var(--text-primary);">{{chartValue}}</div>
+            <div style="font-size:13.5px;color:{{chartChangeColor}};margin-top:3px;">{{chartChange}}</div>
+          </div>
+        </div>
+        <svg viewBox="0 0 1080 260" preserveAspectRatio="none" style="width:100%;height:280px;display:block;cursor:crosshair;" onMouseMove="{{onChartHover}}" onMouseLeave="{{onChartLeave}}" role="img" aria-label="Line chart of Roth IRA account value from October 2025 to September 2026, rising from $2.72M to $3.1M with a step up in January from an annual IRA contribution. Hover to see the value for each month.">
+          <defs>
+            <linearGradient id="valueGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#17BFB4" stop-opacity="0.28"></stop>
+              <stop offset="100%" stop-color="#17BFB4" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <line x1="60" y1="10" x2="1060" y2="10" stroke="var(--border-strong)" stroke-width="1"></line>
+          <line x1="60" y1="54" x2="1060" y2="54" stroke="var(--border-strong)" stroke-width="1"></line>
+          <line x1="60" y1="98" x2="1060" y2="98" stroke="var(--border-strong)" stroke-width="1"></line>
+          <line x1="60" y1="142" x2="1060" y2="142" stroke="var(--border-strong)" stroke-width="1"></line>
+          <line x1="60" y1="186" x2="1060" y2="186" stroke="var(--border-strong)" stroke-width="1"></line>
+          <line x1="60" y1="230" x2="1060" y2="230" stroke="var(--border-strong)" stroke-width="1"></line>
+          <text x="52" y="13" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--text-tertiary)">$3.1M</text>
+          <text x="52" y="57" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--text-tertiary)">$3.0M</text>
+          <text x="52" y="101" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--text-tertiary)">$2.9M</text>
+          <text x="52" y="145" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--text-tertiary)">$2.8M</text>
+          <text x="52" y="189" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--text-tertiary)">$2.7M</text>
+          <text x="52" y="233" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--text-tertiary)">$2.6M</text>
+
+          <line x1="332.7" y1="10" x2="332.7" y2="230" stroke="var(--text-faint)" stroke-width="1" stroke-dasharray="3,3"></line>
+          <text x="338.7" y="22" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="var(--text-secondary)">+$8,000 IRA contribution</text>
+
+          <path d="M60,177.2 L150.9,159.6 L241.8,183.8 L332.7,128.8 L423.6,122.2 L514.5,102.4 L605.5,115.6 L696.4,82.6 L787.3,63.7 L878.2,49.6 L969.1,34.2 L1060,11.8 L1060,230 L60,230 Z" fill="url(#valueGrad)" stroke="none"></path>
+          <polyline points="60,177.2 150.9,159.6 241.8,183.8 332.7,128.8 423.6,122.2 514.5,102.4 605.5,115.6 696.4,82.6 787.3,63.7 878.2,49.6 969.1,34.2 1060,11.8" fill="none" stroke="#17BFB4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+
+          <line x1="{{hoverX}}" y1="10" x2="{{hoverX}}" y2="230" stroke="var(--accent-bright)" stroke-width="1" stroke-opacity="0.35"></line>
+          <circle cx="{{hoverX}}" cy="{{hoverY}}" r="5" fill="var(--accent-bright)" stroke="var(--bg-card)" stroke-width="2"></circle>
+
+          <text x="60" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Oct</text>
+          <text x="150.9" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Nov</text>
+          <text x="241.8" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Dec</text>
+          <text x="332.7" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Jan</text>
+          <text x="423.6" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Feb</text>
+          <text x="514.5" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Mar</text>
+          <text x="605.5" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Apr</text>
+          <text x="696.4" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">May</text>
+          <text x="787.3" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Jun</text>
+          <text x="878.2" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Jul</text>
+          <text x="969.1" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-tertiary)">Aug</text>
+          <text x="1060" y="248" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--text-primary)" font-weight="600">Sep</text>
+        </svg>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:22px;flex-grow:1;min-height:0;">
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:25px;display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <div style="font-size:16px;font-weight:600;color:var(--text-primary);">Performance Snapshot</div>
+            <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px;">MWR trails TWR modestly due to a $8,000 contribution added in January, after markets had already begun to rally.</div>
+          </div>
+          <div>
+            <div style="display:grid;grid-template-columns:1fr repeat(3,0.72fr);padding:0 5px 10px;font-size:12.5px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid var(--border-strong);">
+              <div>Period</div><div style="text-align:right;">TWR</div><div style="text-align:right;">MWR</div><div style="text-align:right;">Benchmark¹</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(3,0.72fr);padding:10px 5px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14.5px;">
+              <div style="color:var(--text-primary);">1 Month</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+1.3%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+1.3%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">+0.9%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(3,0.72fr);padding:10px 5px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14.5px;">
+              <div style="color:var(--text-primary);">3 Months</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+4.9%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+4.8%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">+3.8%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(3,0.72fr);padding:10px 5px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14.5px;background:rgba(23,191,180,0.10);border-radius:6px;">
+              <div style="color:var(--text-primary);font-weight:600;">Year to Date</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+13.6%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+13.1%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);font-weight:600;">+9.4%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(3,0.72fr);padding:10px 5px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14.5px;">
+              <div style="color:var(--text-primary);">1 Year</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+15.4%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+14.9%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">+11.7%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(3,0.72fr);padding:10px 5px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14.5px;">
+              <div style="color:var(--text-primary);">3 Years (ann.)</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+11.0%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+10.6%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">+8.2%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(3,0.72fr);padding:10px 5px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14.5px;">
+              <div style="color:var(--text-primary);">5 Years (ann.)</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+11.8%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+11.4%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">+9.1%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr repeat(3,0.72fr);padding:10px 5px;align-items:center;font-size:14.5px;">
+              <div style="color:var(--text-primary);">Since Inception <span style="color:var(--text-tertiary);font-weight:400;">(Jan 2016)</span></div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+9.9%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+9.6%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">+7.9%</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--text-tertiary);">¹ MSCI/Bloomberg 60/40 Global Blended Benchmark, TWR basis.</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:22px;min-height:0;">
+          <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px;">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:5px;">
+              <div style="font-size:16px;font-weight:600;color:var(--text-primary);">Current Allocation</div>
+              <span style="background:rgba(227,164,56,0.14);color:var(--warning);font-size:12px;font-weight:600;padding:4px 9px;border-radius:100px;">No Model Applied</span>
+            </div>
+            <div style="font-size:12.5px;color:var(--text-tertiary);margin-bottom:18px;">This account has no model assigned, so there's no target weight to compare against — only current holdings by asset class.</div>
+
+            <div style="margin-bottom:17px;">
+              <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px;">
+                <span style="display:flex;align-items:center;gap:8px;color:var(--text-primary);font-weight:600;"><span style="width:9px;height:9px;border-radius:2px;background:#17BFB4;display:inline-block;"></span>Equities</span>
+                <span style="font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);font-weight:600;">$2,514,340</span>
+              </div>
+              <div style="position:relative;height:8px;background:var(--border-strong);border-radius:100px;">
+                <div style="position:absolute;left:0;top:0;height:8px;width:81.2%;background:#17BFB4;border-radius:100px;"></div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;font-size:12px;color:var(--text-tertiary);margin-top:5px;">
+                <span>81.2%</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:17px;">
+              <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px;">
+                <span style="display:flex;align-items:center;gap:8px;color:var(--text-primary);font-weight:600;"><span style="width:9px;height:9px;border-radius:2px;background:var(--warning);display:inline-block;"></span>Fixed Income</span>
+                <span style="font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);font-weight:600;">$297,260</span>
+              </div>
+              <div style="position:relative;height:8px;background:var(--border-strong);border-radius:100px;">
+                <div style="position:absolute;left:0;top:0;height:8px;width:9.6%;background:var(--warning);border-radius:100px;"></div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;font-size:12px;color:var(--text-tertiary);margin-top:5px;">
+                <span>9.6%</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:17px;">
+              <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px;">
+                <span style="display:flex;align-items:center;gap:8px;color:var(--text-primary);font-weight:600;"><span style="width:9px;height:9px;border-radius:2px;background:#8AA0D6;display:inline-block;"></span>Alternatives</span>
+                <span style="font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);font-weight:600;">$117,670</span>
+              </div>
+              <div style="position:relative;height:8px;background:var(--border-strong);border-radius:100px;">
+                <div style="position:absolute;left:0;top:0;height:8px;width:3.8%;background:#8AA0D6;border-radius:100px;"></div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;font-size:12px;color:var(--text-tertiary);margin-top:5px;">
+                <span>3.8%</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px;">
+                <span style="display:flex;align-items:center;gap:8px;color:var(--text-primary);font-weight:600;"><span style="width:9px;height:9px;border-radius:2px;background:var(--text-nav-inactive);display:inline-block;"></span>Cash</span>
+                <span style="font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);font-weight:600;">$167,210</span>
+              </div>
+              <div style="position:relative;height:8px;background:var(--border-strong);border-radius:100px;">
+                <div style="position:absolute;left:0;top:0;height:8px;width:5.4%;background:var(--text-nav-inactive);border-radius:100px;"></div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;font-size:12px;color:var(--text-tertiary);margin-top:5px;">
+                <span>5.4%</span>
+              </div>
+            </div>
+
+            <a href="ModelPortfolios.dc.html" style="display:flex;align-items:center;gap:9px;background:rgba(23,191,180,0.10);border:1px solid rgba(23,191,180,0.35);border-radius:8px;padding:12px 15px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="2" style="flex-shrink:0;"><path d="M12 3l9 5-9 5-9-5 9-5z"></path><path d="M3 13l9 5 9-5"></path></svg>
+              <span style="font-size:13px;color:var(--accent-bright);line-height:1.4;font-weight:600;">Apply a model to this account to enable target allocation and drift tracking →</span>
+            </a>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px;flex-grow:1;display:flex;flex-direction:column;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <div style="font-size:16px;font-weight:600;color:var(--text-primary);">Top Holdings</div>
+              <span style="font-size:13.5px;color:var(--text-tertiary);">14 holdings total</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;justify-content:space-between;font-size:14.5px;"><span style="color:var(--text-primary);font-weight:600;">VOO <span style="color:var(--text-tertiary);font-weight:400;">Vanguard S&amp;P 500 ETF</span></span><span style="font-family:'IBM Plex Mono',monospace;">$612,480</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:14.5px;"><span style="color:var(--text-primary);font-weight:600;">AAPL <span style="color:var(--text-tertiary);font-weight:400;">Apple Inc</span></span><span style="font-family:'IBM Plex Mono',monospace;">$298,340</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:14.5px;"><span style="color:var(--text-primary);font-weight:600;">MSFT <span style="color:var(--text-tertiary);font-weight:400;">Microsoft Corp</span></span><span style="font-family:'IBM Plex Mono',monospace;">$276,910</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:14.5px;"><span style="color:var(--text-primary);font-weight:600;">QQQ <span style="color:var(--text-tertiary);font-weight:400;">Invesco QQQ Trust</span></span><span style="font-family:'IBM Plex Mono',monospace;">$254,600</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:14.5px;"><span style="color:var(--text-primary);font-weight:600;">NVDA <span style="color:var(--text-tertiary);font-weight:400;">NVIDIA Corp</span></span><span style="font-family:'IBM Plex Mono',monospace;">$198,730</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+      <sc-if value="{{isTransactionsTab}}" hint-placeholder-val="{{false}}">
+      <div style="display:flex;flex-direction:column;gap:18px;flex-grow:1;min-height:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:13px;">
+            <div style="position:relative;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.8" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+              <input type="text" placeholder="Search transactions…" aria-label="Search transactions" style="width:260px;box-sizing:border-box;height:38px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-card);padding:0 16px 0 40px;font-size:14px;color:var(--text-primary);">
+            </div>
+            <select aria-label="Filter by transaction type" style="height:38px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-card);padding:0 11px;font-size:14px;color:var(--text-primary);">
+              <option>All Types</option>
+              <option>Buy</option>
+              <option>Sell</option>
+              <option>Dividend</option>
+              <option>Reinvestment</option>
+              <option>Contribution</option>
+              <option>RMD Withdrawal</option>
+            </select>
+            <span style="font-size:13.5px;color:var(--text-tertiary);">18 transactions · Jan 15 – Sep 12, 2026</span>
+          </div>
+          <button style="background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border-card);border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+            Export
+          </button>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;flex-grow:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:12px 22px;font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid var(--border-strong);">
+            <div>Date</div><div>Type</div><div>Description</div><div style="text-align:right;">Quantity</div><div style="text-align:right;">Price</div><div style="text-align:right;">Amount</div>
+          </div>
+          <div style="overflow-y:auto;">
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Sep 12, 2026</div>
+              <div><span style="background:rgba(23,191,180,0.14);color:#5FD8CE;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Buy</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">VOO <span style="color:var(--text-tertiary);font-weight:400;">— Vanguard S&amp;P 500 ETF</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">40.000</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$612.30</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$24,492.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Sep 8, 2026</div>
+              <div><span style="background:rgba(138,160,214,0.16);color:#8AA0D6;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Reinvestment</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">VOO <span style="color:var(--text-tertiary);font-weight:400;">— Vanguard S&amp;P 500 ETF</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">3.120</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$608.50</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$1,898.52</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Sep 5, 2026</div>
+              <div><span style="background:rgba(52,211,153,0.14);color:var(--positive);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Dividend</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">VOO <span style="color:var(--text-tertiary);font-weight:400;">— Vanguard S&amp;P 500 ETF</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+$1,898.52</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Sep 2, 2026</div>
+              <div><span style="background:rgba(227,164,56,0.16);color:var(--warning);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">RMD Withdrawal</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">Distribution <span style="color:var(--text-tertiary);font-weight:400;">— Required minimum distribution</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$18,400.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Aug 28, 2026</div>
+              <div><span style="background:rgba(124,92,252,0.16);color:#B9A8FF;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Sell</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">NVDA <span style="color:var(--text-tertiary);font-weight:400;">— NVIDIA Corp</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">60.000</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$187.40</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+$11,244.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Aug 24, 2026</div>
+              <div><span style="background:rgba(23,191,180,0.14);color:#5FD8CE;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Buy</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">QQQ <span style="color:var(--text-tertiary);font-weight:400;">— Invesco QQQ Trust</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">25.000</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$612.80</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$15,320.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Aug 18, 2026</div>
+              <div><span style="background:rgba(52,211,153,0.14);color:var(--positive);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Dividend</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">AAPL <span style="color:var(--text-tertiary);font-weight:400;">— Apple Inc</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+$412.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Aug 15, 2026</div>
+              <div><span style="background:rgba(138,160,214,0.16);color:#8AA0D6;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Reinvestment</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">AAPL <span style="color:var(--text-tertiary);font-weight:400;">— Apple Inc</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">1.804</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$228.40</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$412.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Aug 10, 2026</div>
+              <div><span style="background:rgba(23,191,180,0.14);color:#5FD8CE;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Buy</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">MSFT <span style="color:var(--text-tertiary);font-weight:400;">— Microsoft Corp</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">15.000</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$409.60</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$6,144.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Aug 5, 2026</div>
+              <div><span style="background:rgba(52,211,153,0.14);color:var(--positive);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Dividend</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">MSFT <span style="color:var(--text-tertiary);font-weight:400;">— Microsoft Corp</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+$186.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Jul 30, 2026</div>
+              <div><span style="background:rgba(124,92,252,0.16);color:#B9A8FF;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Sell</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">QQQ <span style="color:var(--text-tertiary);font-weight:400;">— Invesco QQQ Trust</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">10.000</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$598.20</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+$5,982.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Jul 24, 2026</div>
+              <div><span style="background:rgba(23,191,180,0.14);color:#5FD8CE;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Buy</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">VOO <span style="color:var(--text-tertiary);font-weight:400;">— Vanguard S&amp;P 500 ETF</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">20.000</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$598.10</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$11,962.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Jul 18, 2026</div>
+              <div><span style="background:rgba(52,211,153,0.14);color:var(--positive);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Dividend</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">VOO <span style="color:var(--text-tertiary);font-weight:400;">— Vanguard S&amp;P 500 ETF</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+$1,844.30</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Jul 12, 2026</div>
+              <div><span style="background:rgba(138,160,214,0.16);color:#8AA0D6;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Reinvestment</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">VOO <span style="color:var(--text-tertiary);font-weight:400;">— Vanguard S&amp;P 500 ETF</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">3.084</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$598.10</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$1,844.30</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Jul 5, 2026</div>
+              <div><span style="background:rgba(23,191,180,0.14);color:#5FD8CE;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Buy</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">NVDA <span style="color:var(--text-tertiary);font-weight:400;">— NVIDIA Corp</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">80.000</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$172.30</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$13,784.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Jun 28, 2026</div>
+              <div><span style="background:rgba(52,211,153,0.14);color:var(--positive);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Dividend</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">AAPL <span style="color:var(--text-tertiary);font-weight:400;">— Apple Inc</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+$398.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Jan 20, 2026</div>
+              <div><span style="background:rgba(23,191,180,0.14);color:#5FD8CE;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Buy</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">VOO <span style="color:var(--text-tertiary);font-weight:400;">— Vanguard S&amp;P 500 ETF</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">13.680</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">$584.90</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-primary);font-weight:600;">-$8,000.00</div>
+            </div>
+            <div style="display:grid;grid-template-columns:0.85fr 1.15fr 2.1fr 0.85fr 0.9fr 1.05fr;padding:9px 22px;align-items:center;border-bottom:1px solid var(--border-row);font-size:13.5px;">
+              <div style="color:var(--text-secondary);">Jan 15, 2026</div>
+              <div><span style="background:rgba(255,255,255,0.08);color:var(--text-secondary);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;white-space:nowrap;">Contribution</span></div>
+              <div style="color:var(--text-primary);font-weight:600;">IRA Contribution <span style="color:var(--text-tertiary);font-weight:400;">— 2026 Roth IRA annual contribution</span></div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);">—</div>
+              <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);font-weight:600;">+$8,000.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+      <sc-if value="{{isDocumentsTab}}" hint-placeholder-val="{{false}}">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;flex-grow:1;min-height:0;overflow-y:auto;align-content:start;">
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4M9 12h6M9 16h6"></path></svg>
+            <div style="font-size:15.5px;font-weight:600;color:var(--text-primary);">Monthly Statements</div>
+            <span style="font-size:12.5px;color:var(--text-tertiary);">20 documents</span>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Statement — August 2026.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Monthly account statement</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Sep 4, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">356 KB</div>
+                <button aria-label="Download Statement — August 2026.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Statement — July 2026.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Monthly account statement</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Aug 4, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">348 KB</div>
+                <button aria-label="Download Statement — July 2026.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Statement — June 2026.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Monthly account statement</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Jul 4, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">351 KB</div>
+                <button aria-label="Download Statement — June 2026.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Statement — May 2026.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Monthly account statement</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Jun 4, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">339 KB</div>
+                <button aria-label="Download Statement — May 2026.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+          </div>
+              <a href="#" style="display:block;text-align:center;padding:9px;font-size:13px;color:var(--accent-bright);font-weight:600;">View all 20 statements →</a>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="1.8"><path d="M9 12h6M9 16h6M9 8h2"></path><rect x="4" y="3" width="16" height="18" rx="2"></rect></svg>
+            <div style="font-size:15.5px;font-weight:600;color:var(--text-primary);">Trade Confirmations</div>
+            <span style="font-size:12.5px;color:var(--text-tertiary);">31 documents</span>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Confirm — Buy 40 sh VOO</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Executed Sep 12, 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Sep 12, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">82 KB</div>
+                <button aria-label="Download Confirm — Buy 40 sh VOO" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Confirm — Sell 60 sh NVDA</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Executed Aug 28, 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Aug 28, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">80 KB</div>
+                <button aria-label="Download Confirm — Sell 60 sh NVDA" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Confirm — Buy 25 sh QQQ</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Executed Aug 24, 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Aug 24, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">81 KB</div>
+                <button aria-label="Download Confirm — Buy 25 sh QQQ" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Confirm — Buy 15 sh MSFT</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Executed Aug 10, 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Aug 10, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">79 KB</div>
+                <button aria-label="Download Confirm — Buy 15 sh MSFT" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+          </div>
+              <a href="#" style="display:block;text-align:center;padding:9px;font-size:13px;color:var(--accent-bright);font-weight:600;">View all 31 confirmations →</a>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="1.8"><path d="M9 14l2 2 4-4"></path><rect x="4" y="3" width="16" height="18" rx="2"></rect></svg>
+            <div style="font-size:15.5px;font-weight:600;color:var(--text-primary);">Tax Documents</div>
+            <span style="font-size:12.5px;color:var(--text-tertiary);">5 documents</span>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">2025 Form 5498 — IRA Contribution Information</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Tax year 2025</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">May 29, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">112 KB</div>
+                <button aria-label="Download 2025 Form 5498 — IRA Contribution Information" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">2025 Form 1099-R — Distributions from Retirement Accounts</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Tax year 2025</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Feb 2, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">118 KB</div>
+                <button aria-label="Download 2025 Form 1099-R — Distributions from Retirement Accounts" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">2024 Form 5498 — IRA Contribution Information</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Tax year 2024</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">May 28, 2025</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">109 KB</div>
+                <button aria-label="Download 2024 Form 5498 — IRA Contribution Information" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">2024 Form 1099-R — Distributions from Retirement Accounts</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Tax year 2024</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Jan 31, 2025</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">115 KB</div>
+                <button aria-label="Download 2024 Form 1099-R — Distributions from Retirement Accounts" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+          </div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="1.8"><path d="M3 17l5-6 4 3 5-7 4 5"></path><path d="M3 21h18"></path></svg>
+            <div style="font-size:15.5px;font-weight:600;color:var(--text-primary);">Quarterly Performance Reports</div>
+            <span style="font-size:12.5px;color:var(--text-tertiary);">12 documents</span>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Q2 2026 Performance Report.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Apr 1 – Jun 30, 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Jul 12, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">534 KB</div>
+                <button aria-label="Download Q2 2026 Performance Report.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Q1 2026 Performance Report.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Jan 1 – Mar 31, 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Apr 11, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">521 KB</div>
+                <button aria-label="Download Q1 2026 Performance Report.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Q4 2025 Performance Report.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Oct 1 – Dec 31, 2025</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Jan 13, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">540 KB</div>
+                <button aria-label="Download Q4 2025 Performance Report.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Q3 2025 Performance Report.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Jul 1 – Sep 30, 2025</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Oct 10, 2025</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">512 KB</div>
+                <button aria-label="Download Q3 2025 Performance Report.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+          </div>
+              <a href="#" style="display:block;text-align:center;padding:9px;font-size:13px;color:var(--accent-bright);font-weight:600;">View all 12 reports →</a>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:22px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright)" stroke-width="1.8"><rect x="4" y="2" width="16" height="20" rx="2"></rect><path d="M8 7h8M8 11h8M8 15h5"></path></svg>
+            <div style="font-size:15.5px;font-weight:600;color:var(--text-primary);">Prospectuses &amp; Fund Documents</div>
+            <span style="font-size:12.5px;color:var(--text-tertiary);">3 documents</span>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">VOO — Vanguard S&amp;P 500 ETF Prospectus.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Updated Apr 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Apr 28, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">1.0 MB</div>
+                <button aria-label="Download VOO — Vanguard S&amp;P 500 ETF Prospectus.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">QQQ — Invesco QQQ Trust Prospectus.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Updated Mar 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Mar 22, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">940 KB</div>
+                <button aria-label="Download QQQ — Invesco QQQ Trust Prospectus.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+              <div class="row-link" style="display:flex;align-items:center;gap:13px;padding:11px 6px;border-radius:8px;">
+                <div style="width:34px;height:34px;border-radius:7px;background:rgba(255,122,110,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v4h4"></path></svg>
+                </div>
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-size:14px;color:var(--text-primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">IRA Disclosure Statement &amp; Custodial Agreement.pdf</div>
+                  <div style="font-size:12.5px;color:var(--text-tertiary);margin-top:2px;">Updated Jan 2026</div>
+                </div>
+                <div style="font-size:13px;color:var(--text-tertiary);white-space:nowrap;">Jan 15, 2026</div>
+                <div style="font-size:13px;color:var(--text-faint);width:50px;text-align:right;">268 KB</div>
+                <button aria-label="Download IRA Disclosure Statement &amp; Custodial Agreement.pdf" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:6px;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M7 11l5 5 5-5M4 21h16"></path></svg>
+                </button>
+              </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </main>
+  </div>
+
+      <sc-if value="{{transferOpen}}" hint-placeholder-val="{{false}}">
+      <div class="xfer-overlay" onClick="{{closeTransfer}}">
+        <div class="xfer-dialog" role="dialog" aria-modal="true" aria-labelledby="xferTitle" onClick="{{stopBubble}}">
+          <div class="xfer-header">
+            <div>
+              <div class="xfer-title" id="xferTitle">Transfer Funds</div>
+              <div class="xfer-subtitle">Move cash between accounts on file</div>
+            </div>
+            <button type="button" class="xfer-close" aria-label="Close" onClick="{{closeTransfer}}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+            </button>
+          </div>
+
+          <div class="xfer-body">
+
+            <div class="xfer-field-group">
+              <label class="xfer-label" for="xferFrom">From Account</label>
+              <div class="xfer-select-wrap">
+                <select id="xferFrom" value="{{transferFrom}}" onChange="{{onTransferFromChange}}">
+                  <option value="brokerage">Joint Brokerage — •••• 4821</option>
+                  <option value="rothira">Roth IRA — •••• 5512</option>
+                  <option value="savings">Premier Savings — •••• 6630</option>
+                  <option value="uma">Unified Managed Account — •••• 3315</option>
+                </select>
+                <span class="xfer-select-caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></span>
+              </div>
+              <div class="xfer-meta">Available cash balance: {{transferAvailableCashFmt}}</div>
+            </div>
+
+            <button type="button" class="xfer-swap" aria-label="Swap accounts" title="Swap from/to" onClick="{{swapTransferAccounts}}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10l5-5 5 5M12 5v14M17 14l-5 5-5-5"></path></svg>
+            </button>
+
+            <div class="xfer-field-group">
+              <label class="xfer-label" for="xferTo">To Account</label>
+              <div class="xfer-select-wrap">
+                <select id="xferTo" value="{{transferTo}}" onChange="{{onTransferToChange}}">
+                  <option value="brokerage">Joint Brokerage — •••• 4821</option>
+                  <option value="rothira">Roth IRA — •••• 5512</option>
+                  <option value="savings">Premier Savings — •••• 6630</option>
+                  <option value="uma">Unified Managed Account — •••• 3315</option>
+                  <option value="loan">Securities-Backed Line of Credit — •••• 7043</option>
+                  <option value="external">+ Add an external account…</option>
+                </select>
+                <span class="xfer-select-caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></span>
+              </div>
+              <div class="xfer-meta">Linked accounts are verified. External accounts require micro-deposit verification (1–2 business days) before first use.</div>
+            </div>
+
+            <div class="xfer-field-group">
+              <div class="xfer-label">Transfer Method</div>
+              <div class="xfer-method-grid">
+                <button type="button" class="xfer-option" style="{{methodAchStyle}}" onClick="{{selectMethodAch}}">
+                  <span class="xfer-option-name" style="color:{{methodAchNameColor}};">ACH</span>
+                  <span class="xfer-option-desc">1–3 business days</span>
+                </button>
+                <button type="button" class="xfer-option" style="{{methodRtpStyle}}" onClick="{{selectMethodRtp}}">
+                  <span class="xfer-option-name" style="color:{{methodRtpNameColor}};">RTP</span>
+                  <span class="xfer-option-desc">Seconds, 24/7</span>
+                </button>
+                <button type="button" class="xfer-option" style="{{methodFednowStyle}}" onClick="{{selectMethodFednow}}">
+                  <span class="xfer-option-name" style="color:{{methodFednowNameColor}};">FedNow</span>
+                  <span class="xfer-option-desc">Seconds, 24/7</span>
+                </button>
+                <button type="button" class="xfer-option" style="{{methodWireStyle}}" onClick="{{selectMethodWire}}">
+                  <span class="xfer-option-name" style="color:{{methodWireNameColor}};">Wire</span>
+                  <span class="xfer-option-desc">Same business day</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="xfer-field-group">
+              <div class="xfer-label">Schedule</div>
+              <div class="xfer-segmented">
+                <button type="button" style="{{scheduleOnetimeStyle}}" onClick="{{selectScheduleOnetime}}">One-Time</button>
+                <button type="button" style="{{scheduleRecurringStyle}}" onClick="{{selectScheduleRecurring}}">Recurring</button>
+              </div>
+            </div>
+
+            <sc-if value="{{isRecurring}}" hint-placeholder-val="{{false}}">
+            <div class="xfer-recurring-panel">
+
+              <div class="xfer-field-group">
+                <div class="xfer-label">Transfer Logic</div>
+                <div class="xfer-logic-grid">
+                  <button type="button" class="xfer-option" style="{{logicFixedStyle}}" onClick="{{selectLogicFixed}}">
+                    <span class="xfer-option-name" style="color:{{logicFixedNameColor}};">Fixed Amount</span>
+                    <span class="xfer-option-desc">Same dollar amount every cycle</span>
+                  </button>
+                  <button type="button" class="xfer-option" style="{{logicSweepStyle}}" onClick="{{selectLogicSweep}}">
+                    <span class="xfer-option-name" style="color:{{logicSweepNameColor}};">Sweep Excess Balance</span>
+                    <span class="xfer-option-desc">Sweep anything above a target at end of day</span>
+                  </button>
+                  <button type="button" class="xfer-option" style="{{logicBackupStyle}}" onClick="{{selectLogicBackup}}">
+                    <span class="xfer-option-name" style="color:{{logicBackupNameColor}};">Backup Funding</span>
+                    <span class="xfer-option-desc">Top up if balance drops below a minimum</span>
+                  </button>
+                </div>
+              </div>
+
+              <sc-if value="{{isLogicFixed}}" hint-placeholder-val="{{true}}">
+              <div class="xfer-row-2">
+                <div class="xfer-field-group">
+                  <label class="xfer-label" for="xferFrequency">Frequency</label>
+                  <div class="xfer-select-wrap">
+                    <select id="xferFrequency" value="{{transferFrequency}}" onChange="{{onTransferFrequencyChange}}">
+                      <option value="weekly">Weekly</option>
+                      <option value="biweekly">Bi-Weekly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="quarterly">Quarterly</option>
+                      <option value="annually">Annually</option>
+                    </select>
+                    <span class="xfer-select-caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></span>
+                  </div>
+                </div>
+                <div class="xfer-field-group">
+                  <label class="xfer-label" for="xferStartDateFixed">Start Date</label>
+                  <input class="xfer-date-input" id="xferStartDateFixed" type="date" value="{{transferStartDate}}" onChange="{{onTransferStartDateChange}}">
+                </div>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{isLogicNotFixed}}" hint-placeholder-val="{{false}}">
+              <div class="xfer-row-2">
+                <div class="xfer-field-group">
+                  <div class="xfer-label">Runs</div>
+                  <div class="xfer-cadence-note">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright,#2DD4C7)" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+                    <span>{{transferCadenceLabel}}</span>
+                  </div>
+                </div>
+                <div class="xfer-field-group">
+                  <label class="xfer-label" for="xferStartDateAuto">Start Date</label>
+                  <input class="xfer-date-input" id="xferStartDateAuto" type="date" value="{{transferStartDate}}" onChange="{{onTransferStartDateChange}}">
+                </div>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{showSweepFields}}" hint-placeholder-val="{{false}}">
+              <div class="xfer-field-group">
+                <label class="xfer-label" for="xferSweepMin">Keep a Minimum Balance In {{transferSweepFromName}}</label>
+                <div class="xfer-threshold-wrap">
+                  <span class="xfer-threshold-currency">$</span>
+                  <input class="xfer-threshold-input" id="xferSweepMin" type="text" inputmode="decimal" value="{{transferSweepMin}}" onChange="{{onTransferSweepMinChange}}">
+                </div>
+                <div class="xfer-threshold-help">Anything above this at end of day is swept to {{transferSweepToName}}.</div>
+                <div class="xfer-sublabel">Maximum daily sweep (optional cap)</div>
+                <div class="xfer-threshold-wrap">
+                  <span class="xfer-threshold-currency">$</span>
+                  <input class="xfer-threshold-input" id="xferSweepMax" type="text" inputmode="decimal" placeholder="No cap" value="{{transferSweepMax}}" onChange="{{onTransferSweepMaxChange}}">
+                </div>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{showBackupFields}}" hint-placeholder-val="{{false}}">
+              <div class="xfer-field-group">
+                <label class="xfer-label" for="xferBackupMin">Minimum Balance To Maintain In {{transferSweepToName}}</label>
+                <div class="xfer-threshold-wrap">
+                  <span class="xfer-threshold-currency">$</span>
+                  <input class="xfer-threshold-input" id="xferBackupMin" type="text" inputmode="decimal" value="{{transferBackupMin}}" onChange="{{onTransferBackupMinChange}}">
+                </div>
+                <div class="xfer-threshold-help">If the balance falls below this, funds are pulled from {{transferSweepFromName}} to restore it.</div>
+                <div class="xfer-sublabel">Maximum transfer per occurrence</div>
+                <div class="xfer-threshold-wrap">
+                  <span class="xfer-threshold-currency">$</span>
+                  <input class="xfer-threshold-input" id="xferBackupMax" type="text" inputmode="decimal" value="{{transferBackupMax}}" onChange="{{onTransferBackupMaxChange}}">
+                </div>
+              </div>
+              </sc-if>
+
+              <div class="xfer-field-group">
+                <label class="xfer-label" for="xferEndType">Ends</label>
+                <div class="xfer-row-2">
+                  <div class="xfer-select-wrap">
+                    <select id="xferEndType" value="{{transferEndType}}" onChange="{{onTransferEndTypeChange}}">
+                      <option value="never">Never</option>
+                      <option value="date">On a specific date</option>
+                      <option value="count">After a number of transfers</option>
+                    </select>
+                    <span class="xfer-select-caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg></span>
+                  </div>
+                  <sc-if value="{{endIsDate}}" hint-placeholder-val="{{false}}">
+                  <input class="xfer-date-input" type="date" aria-label="End date" value="{{transferEndDate}}" onChange="{{onTransferEndDateChange}}">
+                  </sc-if>
+                  <sc-if value="{{endIsCount}}" hint-placeholder-val="{{false}}">
+                  <input class="xfer-number-input" type="number" min="1" aria-label="Number of transfers" placeholder="e.g. 12" value="{{transferEndCount}}" onChange="{{onTransferEndCountChange}}">
+                  </sc-if>
+                </div>
+              </div>
+
+              <div class="xfer-info-panel info">
+                <span style="flex-shrink:0;margin-top:1px;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright,#2DD4C7)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M8 2v4M16 2v4M3 10h18"></path></svg>
+                </span>
+                <div class="xfer-info-text">{{transferSummaryText}}</div>
+              </div>
+
+            </div>
+            </sc-if>
+
+            <sc-if value="{{showAmountField}}" hint-placeholder-val="{{true}}">
+            <div class="xfer-field-group">
+              <label class="xfer-label" for="xferAmount">{{transferAmountLabel}}</label>
+              <div class="xfer-amount-wrap">
+                <span class="xfer-amount-currency">$</span>
+                <input class="xfer-amount-input" id="xferAmount" type="text" inputmode="decimal" value="{{transferAmount}}" onChange="{{onTransferAmountChange}}">
+              </div>
+              <div class="xfer-amount-footer">
+                <span>Available cash balance: {{transferAvailableCashFmt}}</span>
+                <button type="button" class="xfer-amount-max" onClick="{{fillTransferMax}}">Transfer max</button>
+              </div>
+            </div>
+            </sc-if>
+
+            <div class="xfer-info-panel info">
+              <span style="flex-shrink:0;margin-top:1px;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-bright,#2DD4C7)" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v.01M12 11v5"></path></svg>
+              </span>
+              <div class="xfer-info-text">
+                <div style="font-weight:700;margin-bottom:4px;color:var(--text-primary);">{{transferMethodName}}</div>
+                <sc-for list="{{transferMethodRows}}" as="row" hint-placeholder-count="4">
+                  <div class="xfer-info-row"><span class="k">{{row.k}}</span><span class="v">{{row.v}}</span></div>
+                </sc-for>
+              </div>
+            </div>
+
+            <sc-if value="{{showApproval}}" hint-placeholder-val="{{false}}">
+            <div class="xfer-info-panel warning">
+              <span style="flex-shrink:0;margin-top:1px;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9L2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+              </span>
+              <div class="xfer-info-text">{{transferApprovalText}}</div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{showLimitError}}" hint-placeholder-val="{{false}}">
+            <div class="xfer-info-panel error">
+              <span style="flex-shrink:0;margin-top:1px;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M15 9l-6 6M9 9l6 6"></path></svg>
+              </span>
+              <div class="xfer-info-text">{{transferLimitText}}</div>
+            </div>
+            </sc-if>
+
+            <div class="xfer-field-group">
+              <label class="xfer-label" for="xferMemo">Memo <span style="text-transform:none;color:var(--text-tertiary);font-weight:400;">(optional)</span></label>
+              <textarea class="xfer-memo" id="xferMemo" placeholder="Add a note for your records…" value="{{transferMemo}}" onChange="{{onTransferMemoChange}}"></textarea>
+            </div>
+
+          </div>
+
+          <div class="xfer-footer">
+            <div class="xfer-footer-note">{{transferFooterNote}}</div>
+            <div class="xfer-footer-actions">
+              <button type="button" class="xfer-btn xfer-btn-cancel" onClick="{{closeTransfer}}">Cancel</button>
+              <button type="button" class="xfer-btn xfer-btn-review" onClick="{{closeTransfer}}" disabled="{{showLimitError}}">
+                {{transferReviewLabel}}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1950}}'>
+class Component extends DCLogic {
+  state = { theme: 'dark', navExpanded: true, hoverIndex: null, selectedTab: 'overview', transferOpen: false, transferSchedule: 'onetime', transferLogic: 'fixed', transferMethod: 'ach', transferFrom: 'rothira', transferTo: 'brokerage', transferAmount: '48900', transferFrequency: 'monthly', transferStartDate: '2026-10-01', transferEndType: 'never', transferEndDate: '2027-10-01', transferEndCount: '', transferSweepMin: '50000', transferSweepMax: '', transferBackupMin: '10000', transferBackupMax: '5000', transferMemo: '' };
+
+  months = [
+    { label: 'Oct', full: 'Oct 2025', x: 60, y: 177.2, value: 2720000 },
+    { label: 'Nov', full: 'Nov 2025', x: 150.9, y: 159.6, value: 2760000 },
+    { label: 'Dec', full: 'Dec 2025', x: 241.8, y: 183.8, value: 2705000 },
+    { label: 'Jan', full: 'Jan 2026', x: 332.7, y: 128.8, value: 2830000 },
+    { label: 'Feb', full: 'Feb 2026', x: 423.6, y: 122.2, value: 2845000 },
+    { label: 'Mar', full: 'Mar 2026', x: 514.5, y: 102.4, value: 2890000 },
+    { label: 'Apr', full: 'Apr 2026', x: 605.5, y: 115.6, value: 2860000 },
+    { label: 'May', full: 'May 2026', x: 696.4, y: 82.6, value: 2935000 },
+    { label: 'Jun', full: 'Jun 2026', x: 787.3, y: 63.7, value: 2978000 },
+    { label: 'Jul', full: 'Jul 2026', x: 878.2, y: 49.6, value: 3010000 },
+    { label: 'Aug', full: 'Aug 2026', x: 969.1, y: 34.2, value: 3045000 },
+    { label: 'Sep', full: 'Sep 2026', x: 1060, y: 11.8, value: 3096480 },
+  ];
+
+  toggleTheme() {
+    this.setState({ theme: this.state.theme === 'dark' ? 'light' : 'dark' });
+  }
+
+  toggleNav() {
+    this.setState({ navExpanded: !this.state.navExpanded });
+  }
+
+  selectTab(tab) {
+    this.setState({ selectedTab: tab });
+  }
+
+  openTransfer() {
+    this.setState({ transferOpen: true });
+  }
+
+  closeTransfer() {
+    this.setState({ transferOpen: false });
+  }
+
+  setTransferField(field, value) {
+    this.setState({ [field]: value });
+  }
+
+  swapTransferAccounts() {
+    const invalidFrom = ['loan', 'external'];
+    if (invalidFrom.includes(this.state.transferTo)) return;
+    this.setState({ transferFrom: this.state.transferTo, transferTo: this.state.transferFrom });
+  }
+
+  handleChartHover(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (!rect.width) return;
+    const mouseX = (e.clientX - rect.left) * (1080 / rect.width);
+    let nearestIdx = 0;
+    let nearestDist = Infinity;
+    for (let i = 0; i < this.months.length; i++) {
+      const dist = Math.abs(this.months[i].x - mouseX);
+      if (dist < nearestDist) { nearestDist = dist; nearestIdx = i; }
+    }
+    if (this.state.hoverIndex !== nearestIdx) {
+      this.setState({ hoverIndex: nearestIdx });
+    }
+  }
+
+  handleChartLeave() {
+    if (this.state.hoverIndex !== null) {
+      this.setState({ hoverIndex: null });
+    }
+  }
+
+  formatCurrency(v) {
+    return '$' + Math.round(v).toLocaleString('en-US');
+  }
+
+  renderVals() {
+    const theme = this.state.theme ?? 'dark';
+    const navExpanded = this.state.navExpanded ?? true;
+    const idx = this.state.hoverIndex ?? (this.months.length - 1);
+    const point = this.months[idx];
+    const first = this.months[0];
+    const pct = (point.value / first.value - 1) * 100;
+    const pctStr = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`;
+    const span = idx + 1;
+    const selectedTab = this.state.selectedTab ?? 'overview';
+    const tabStyle = (key) => `padding:11px 3px;font-size:15px;font-weight:${selectedTab === key ? 600 : 400};color:${selectedTab === key ? 'var(--text-primary)' : 'var(--text-tertiary)'};border-bottom:2px solid ${selectedTab === key ? '#17BFB4' : 'transparent'};cursor:pointer;`;
+
+    const transferOpen = this.state.transferOpen ?? false;
+    const transferSchedule = this.state.transferSchedule ?? 'onetime';
+    const transferLogic = this.state.transferLogic ?? 'fixed';
+    const transferMethod = this.state.transferMethod ?? 'ach';
+    const transferFrom = this.state.transferFrom ?? 'brokerage';
+    const transferTo = this.state.transferTo ?? 'brokerage';
+    const transferAmount = this.state.transferAmount ?? '0';
+    const transferFrequency = this.state.transferFrequency ?? 'monthly';
+    const transferStartDate = this.state.transferStartDate ?? '2026-10-01';
+    const transferEndType = this.state.transferEndType ?? 'never';
+    const transferEndDate = this.state.transferEndDate ?? '2027-10-01';
+    const transferEndCount = this.state.transferEndCount ?? '';
+    const transferSweepMin = this.state.transferSweepMin ?? '50000';
+    const transferSweepMax = this.state.transferSweepMax ?? '';
+    const transferBackupMin = this.state.transferBackupMin ?? '10000';
+    const transferBackupMax = this.state.transferBackupMax ?? '5000';
+    const transferMemo = this.state.transferMemo ?? '';
+
+    const parseXferAmt = (v) => parseFloat(String(v).replace(/[^0-9.]/g, '')) || 0;
+    const fmtXferAmt = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const XFER_ACCOUNT_NAMES = {
+      brokerage: 'Joint Brokerage — •••• 4821',
+      rothira: 'Roth IRA — •••• 5512',
+      savings: 'Premier Savings — •••• 6630',
+      uma: 'Unified Managed Account — •••• 3315',
+      loan: 'Securities-Backed Line of Credit — •••• 7043',
+      external: 'the external account',
+    };
+
+    const XFER_METHODS = {
+      ach: {
+        name: 'ACH Transfer', limit: 250000, approvalThreshold: 100000, unit: 'daily',
+        rows: [['Speed', '1–3 business days (Standard)'], ['Same-Day ACH', 'Before 3:00 PM ET · $15 fee'], ['Fee', 'No fee (Standard)'], ['Daily limit', '$250,000']],
+        approval: 'Transfers over $100,000 require secondary approval from a second authorized signer before processing.',
+      },
+      rtp: {
+        name: 'Real-Time Payments (RTP)', limit: 100000, approvalThreshold: 50000, unit: 'per-transaction',
+        rows: [['Speed', 'Typically completes in seconds'], ['Availability', '24/7/365, including weekends & holidays'], ['Fee', 'No fee'], ['Network limit', '$100,000 per transaction']],
+        approval: 'RTP transfers are irrevocable once sent. Transfers over $50,000 require secondary approval. Receiving bank must also be on the RTP network.',
+      },
+      fednow: {
+        name: 'FedNow® Instant Payments', limit: 500000, approvalThreshold: 50000, unit: 'per-transaction',
+        rows: [['Speed', 'Typically completes in seconds'], ['Availability', '24/7/365, including weekends & holidays'], ['Fee', 'No fee'], ['Network limit', '$500,000 per transaction']],
+        approval: 'FedNow transfers are irrevocable once sent. Transfers over $50,000 require secondary approval. Receiving institution must also participate in the FedNow network.',
+      },
+      wire: {
+        name: 'Domestic Wire Transfer', limit: null, approvalThreshold: 100000, unit: 'per-transaction',
+        rows: [['Speed', 'Same business day if submitted before 3:00 PM ET'], ['Cutoff time', '3:00 PM ET'], ['Fee', '$25 outgoing wire fee'], ['Limit', 'No standard limit']],
+        approval: 'Transfers over $100,000 require secondary approval and a verbal callback confirmation before release.',
+      },
+    };
+
+    const xferTm = XFER_METHODS[transferMethod];
+    const isRecurring = transferSchedule === 'recurring';
+    const isLogicFixed = transferLogic === 'fixed';
+    const isLogicSweep = transferLogic === 'sweep';
+    const isLogicBackup = transferLogic === 'backup';
+    const isLogicNotFixed = !isLogicFixed;
+    const showSweepFields = isRecurring && isLogicSweep;
+    const showBackupFields = isRecurring && isLogicBackup;
+    const showAmountField = !isRecurring || isLogicFixed;
+
+    let transferActiveAmount;
+    if (!isRecurring || isLogicFixed) transferActiveAmount = parseXferAmt(transferAmount);
+    else if (isLogicSweep) transferActiveAmount = parseXferAmt(transferSweepMax);
+    else transferActiveAmount = parseXferAmt(transferBackupMax);
+
+    const showLimitError = xferTm.limit !== null && transferActiveAmount > xferTm.limit;
+    const showApproval = !showLimitError && transferActiveAmount > xferTm.approvalThreshold;
+
+    let transferLimitText = '';
+    if (showLimitError) {
+      transferLimitText = `This amount exceeds the $${fmtXferAmt(xferTm.limit)} ${xferTm.unit} limit for ${xferTm.name}. Choose Wire or reduce the amount to continue.`;
+    }
+    let transferApprovalText = '';
+    if (showApproval) {
+      transferApprovalText = (isRecurring && !isLogicFixed)
+        ? `Each occurrence above $${fmtXferAmt(xferTm.approvalThreshold)} will require secondary approval before it is released. ${xferTm.approval}`
+        : xferTm.approval;
+    }
+
+    const XFER_FREQ_LABELS = { weekly: 'weekly', biweekly: 'every two weeks', monthly: 'monthly', quarterly: 'quarterly', annually: 'annually' };
+    const fmtXferDate = (v) => {
+      if (!v) return '';
+      const d = new Date(v + 'T00:00:00');
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    };
+
+    const transferCadenceLabel = isLogicSweep ? 'Every business day, end of day' : 'Continuously monitored';
+    const transferCadencePhrase = isLogicFixed
+      ? (XFER_FREQ_LABELS[transferFrequency] || transferFrequency)
+      : (isLogicSweep ? 'every business day (end of day)' : 'continuously, checked throughout the day');
+
+    const endIsNever = transferEndType === 'never';
+    const endIsDate = transferEndType === 'date';
+    const endIsCount = transferEndType === 'count';
+    let transferEndPhrase;
+    if (endIsNever) transferEndPhrase = 'No end date';
+    else if (endIsDate) transferEndPhrase = `Ends ${fmtXferDate(transferEndDate)}`;
+    else transferEndPhrase = `Ends after ${transferEndCount || '—'} transfers`;
+
+    let transferActionPhrase;
+    if (isLogicFixed) transferActionPhrase = `Transfers $${fmtXferAmt(parseXferAmt(transferAmount))}`;
+    else if (isLogicSweep) transferActionPhrase = `Sweeps balance above $${fmtXferAmt(parseXferAmt(transferSweepMin))}`;
+    else transferActionPhrase = `Tops up when balance drops below $${fmtXferAmt(parseXferAmt(transferBackupMin))}`;
+
+    const transferSummaryText = `${transferActionPhrase}, ${transferCadencePhrase}, starting ${fmtXferDate(transferStartDate)} · ${transferEndPhrase}.`;
+
+    const transferFooterNote = isRecurring
+      ? (isLogicFixed ? "Recurring transfers can be paused or canceled at any time from the account's Transfers tab." : 'Standing instructions are reviewed quarterly by Compliance and can be paused or canceled at any time.')
+      : 'Transfers submitted after 5:00 PM ET are processed the next business day.';
+
+    const transferReviewLabel = isRecurring ? 'Review Recurring Transfer' : 'Review Transfer';
+    const transferAmountLabel = isRecurring && isLogicFixed ? 'Amount per Transfer' : 'Amount';
+
+    const transferSweepFromName = XFER_ACCOUNT_NAMES[transferFrom] || 'the From account';
+    const transferSweepToName = XFER_ACCOUNT_NAMES[transferTo] || 'the To account';
+
+    const transferAvailableCash = 48900;
+    const transferAvailableCashFmt = '$' + fmtXferAmt(transferAvailableCash);
+
+    const xferOptStyle = (active) => `border-color:${active ? 'var(--accent-bright,#2DD4C7)' : 'var(--border-card)'};background:${active ? 'rgba(45,212,199,0.08)' : '#0E1113'};`;
+    const xferOptNameColor = (active) => active ? 'var(--accent-bright,#2DD4C7)' : 'var(--text-primary)';
+    const xferSegStyle = (active) => `background:${active ? 'rgba(45,212,199,0.12)' : 'none'};color:${active ? 'var(--accent-bright,#2DD4C7)' : 'var(--text-secondary)'};`;
+
+    const setXferField = (field) => (e) => this.setTransferField(field, e.target.value);
+
+    return {
+      theme,
+      isDark: theme === 'dark',
+      isLight: theme === 'light',
+      navExpanded,
+      navCollapsed: !navExpanded,
+      toggleTheme: () => this.toggleTheme(),
+      toggleNav: () => this.toggleNav(),
+      sidebarStyle: `width:${navExpanded ? '262px' : '82px'};flex-shrink:0;background:var(--bg-sidebar);color:var(--text-primary);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;align-self:flex-start;transition:width 0.18s ease;overflow:hidden;`,
+      sidebarFooterPad: navExpanded ? '20px' : '8px',
+      sidebarFooterJustify: navExpanded ? 'flex-start' : 'center',
+      navToggleIconTransform: navExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
+      chartValue: this.formatCurrency(point.value),
+      chartChange: `${pctStr} over ${span} month${span === 1 ? '' : 's'}`,
+      chartChangeColor: pct >= 0 ? 'var(--positive)' : 'var(--negative)',
+      hoverX: point.x,
+      hoverY: point.y,
+      onChartHover: (e) => this.handleChartHover(e),
+      onChartLeave: () => this.handleChartLeave(),
+      isOverviewTab: selectedTab === 'overview',
+      isTransactionsTab: selectedTab === 'transactions',
+      isDocumentsTab: selectedTab === 'documents',
+      tabOverviewStyle: tabStyle('overview'),
+      tabTransactionsStyle: tabStyle('transactions'),
+      tabDocumentsStyle: tabStyle('documents'),
+      selectOverviewTab: () => this.selectTab('overview'),
+      selectTransactionsTab: () => this.selectTab('transactions'),
+      selectDocumentsTab: () => this.selectTab('documents'),
+
+      transferOpen,
+      openTransfer: () => this.openTransfer(),
+      closeTransfer: () => this.closeTransfer(),
+      stopBubble: (e) => e.stopPropagation(),
+      transferFrom,
+      transferTo,
+      onTransferFromChange: setXferField('transferFrom'),
+      onTransferToChange: setXferField('transferTo'),
+      swapTransferAccounts: () => this.swapTransferAccounts(),
+      transferAvailableCashFmt,
+      methodAchStyle: xferOptStyle(transferMethod === 'ach'),
+      methodAchNameColor: xferOptNameColor(transferMethod === 'ach'),
+      methodRtpStyle: xferOptStyle(transferMethod === 'rtp'),
+      methodRtpNameColor: xferOptNameColor(transferMethod === 'rtp'),
+      methodFednowStyle: xferOptStyle(transferMethod === 'fednow'),
+      methodFednowNameColor: xferOptNameColor(transferMethod === 'fednow'),
+      methodWireStyle: xferOptStyle(transferMethod === 'wire'),
+      methodWireNameColor: xferOptNameColor(transferMethod === 'wire'),
+      selectMethodAch: () => this.setTransferField('transferMethod', 'ach'),
+      selectMethodRtp: () => this.setTransferField('transferMethod', 'rtp'),
+      selectMethodFednow: () => this.setTransferField('transferMethod', 'fednow'),
+      selectMethodWire: () => this.setTransferField('transferMethod', 'wire'),
+      scheduleOnetimeStyle: xferSegStyle(!isRecurring),
+      scheduleRecurringStyle: xferSegStyle(isRecurring),
+      selectScheduleOnetime: () => this.setTransferField('transferSchedule', 'onetime'),
+      selectScheduleRecurring: () => this.setTransferField('transferSchedule', 'recurring'),
+      isRecurring,
+      logicFixedStyle: xferOptStyle(isLogicFixed),
+      logicFixedNameColor: xferOptNameColor(isLogicFixed),
+      logicSweepStyle: xferOptStyle(isLogicSweep),
+      logicSweepNameColor: xferOptNameColor(isLogicSweep),
+      logicBackupStyle: xferOptStyle(isLogicBackup),
+      logicBackupNameColor: xferOptNameColor(isLogicBackup),
+      selectLogicFixed: () => this.setTransferField('transferLogic', 'fixed'),
+      selectLogicSweep: () => this.setTransferField('transferLogic', 'sweep'),
+      selectLogicBackup: () => this.setTransferField('transferLogic', 'backup'),
+      isLogicFixed,
+      isLogicNotFixed,
+      transferFrequency,
+      onTransferFrequencyChange: setXferField('transferFrequency'),
+      transferStartDate,
+      onTransferStartDateChange: setXferField('transferStartDate'),
+      transferCadenceLabel,
+      showSweepFields,
+      transferSweepMin,
+      onTransferSweepMinChange: setXferField('transferSweepMin'),
+      transferSweepMax,
+      onTransferSweepMaxChange: setXferField('transferSweepMax'),
+      transferSweepFromName,
+      transferSweepToName,
+      showBackupFields,
+      transferBackupMin,
+      onTransferBackupMinChange: setXferField('transferBackupMin'),
+      transferBackupMax,
+      onTransferBackupMaxChange: setXferField('transferBackupMax'),
+      transferEndType,
+      onTransferEndTypeChange: setXferField('transferEndType'),
+      endIsDate,
+      endIsCount,
+      transferEndDate,
+      onTransferEndDateChange: setXferField('transferEndDate'),
+      transferEndCount,
+      onTransferEndCountChange: setXferField('transferEndCount'),
+      transferSummaryText,
+      showAmountField,
+      transferAmountLabel,
+      transferAmount,
+      onTransferAmountChange: setXferField('transferAmount'),
+      fillTransferMax: () => this.setTransferField('transferAmount', fmtXferAmt(transferAvailableCash)),
+      transferMethodName: xferTm.name,
+      transferMethodRows: xferTm.rows.map(([k, v]) => ({ k, v })),
+      showApproval,
+      transferApprovalText,
+      showLimitError,
+      transferLimitText,
+      transferMemo,
+      onTransferMemoChange: setXferField('transferMemo'),
+      transferFooterNote,
+      transferReviewLabel,
+    };
+  }
+}
+</script>
+</body>
+</html>

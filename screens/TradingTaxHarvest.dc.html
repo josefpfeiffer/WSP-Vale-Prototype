@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tax Harvest</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  body { margin:0; font-family:'IBM Plex Sans',sans-serif; background:#0A0C0E; color:#F2F3F3; }
+  a { color:inherit; text-decoration:none; }
+  .rail-item:hover { background: rgba(255,255,255,0.06); }
+  .row-link { transition: background 0.12s ease; }
+  .row-link:hover { background:#1B1F23; }
+  ::selection { background: rgba(138,160,214,0.28); }
+</style>
+</helmet>
+<div style="width:100%;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;background:#0A0C0E;overflow:hidden;">
+
+  <header style="height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 31px;background:#000000;border-bottom:1px solid #262B2F;">
+    <div style="display:flex;align-items:center;gap:18px;">
+      <a href="Dashboard.dc.html" aria-label="Back to Wealth Platform" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:7px;color:#9BA1A6;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div style="width:1px;height:22px;background:#262B2F;"></div>
+      <div style="width:36px;height:36px;border-radius:8px;background:#8AA0D6;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#06121F" stroke-width="2"><path d="M4 7h10l-3-3M20 17H10l3 3"/><path d="M4 7v6M20 17v-6"/></svg>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span style="font-family:'Archivo',sans-serif;font-size:18.5px;font-weight:700;color:#F2F3F3;">Trading</span>
+          <span style="font-size:10.5px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#B7C4E8;background:rgba(138,160,214,0.16);padding:3px 8px;border-radius:4px;">Standalone App</span>
+        </div>
+        <div style="font-size:12px;color:#6B7278;margin-top:2px;">Future Firm · BNY Wealth Services</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;">
+      <div style="position:relative;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7278" stroke-width="1.8" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search orders, accounts, tickers…" aria-label="Search trading" style="width:240px;height:34px;border-radius:8px;border:1px solid #262B2F;background:#14171A;padding:0 13px 0 38px;font-size:14px;color:#F2F3F3;">
+      </div>
+      <button aria-label="Notifications" style="position:relative;background:none;border:none;cursor:pointer;padding:5px;color:#9BA1A6;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#9BA1A6;">Thu, Sep 17, 2026 · Mkt Open</div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#8AA0D6;color:#06121F;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">RM</div>
+    </div>
+  </header>
+
+  <div style="flex-grow:1;min-height:0;display:flex;">
+    <aside style="width:220px;flex-shrink:0;background:#000000;border-right:1px solid #262B2F;padding:20px 11px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#5C6368;padding:7px 13px 7px;">Orders</div>
+      <a href="Trading.dc.html" class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">Overview</a>
+      <a href="TradingSingleOrder.dc.html" class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">Single Order Entry</a>
+      <a href="TradingBulkOrder.dc.html" class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">Bulk Order Entry</a>
+      <a href="TradingRebalancer.dc.html" class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">Bulk Rebalancer</a>
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#5C6368;padding:18px 13px 7px;">Portfolio Tools</div>
+      <a href="TradingSwaps.dc.html" class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">Investment Swaps</a>
+      <div class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;background:rgba(138,160,214,0.18);color:#EAF0FB;font-size:14px;font-weight:600;">Tax Harvest</div>
+      <a href="TradingCashRestrictions.dc.html" class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">Cash Restrictions</a>
+      <a href="TradingOverlay.dc.html" class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">Overlay Management</a>
+      <a href="TradingModelEnrichment.dc.html" class="rail-item" style="display:flex;align-items:center;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">Model Enrichment</a>
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#5C6368;padding:18px 13px 7px;">Partner Apps</div>
+      <a href="TradingFixedIncome.dc.html" class="rail-item" style="display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border-radius:7px;color:#ADB4B9;font-size:14px;font-weight:500;">
+        <span>Fixed Income Trading</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5C6368" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+      </a>
+    </aside>
+
+    <main style="flex-grow:1;min-height:0;overflow-y:auto;padding:29px 31px;display:flex;flex-direction:column;gap:20px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0;">
+        <div>
+          <div style="font-family:'Archivo',sans-serif;font-size:26px;font-weight:700;color:#F2F3F3;">Tax Harvest</div>
+          <div style="font-size:14px;color:#9BA1A6;margin-top:5px;">Identify and execute tax-loss harvesting opportunities across the book.</div>
+        </div>
+        <button style="background:#8AA0D6;color:#06121F;border:none;border-radius:8px;padding:11px 20px;font-size:14.5px;font-weight:600;cursor:pointer;">Scan Book for Opportunities</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;flex-shrink:0;">
+        <div style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:16px 18px;">
+          <div style="font-size:12.5px;color:#6B7278;font-weight:500;">Harvestable Loss Identified</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:22.5px;font-weight:600;color:#FF9F94;margin-top:6px;">$412,900</div>
+        </div>
+        <div style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:16px 18px;">
+          <div style="font-size:12.5px;color:#6B7278;font-weight:500;">Accounts with Opportunities</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:22.5px;font-weight:600;color:#F2F3F3;margin-top:6px;">61</div>
+        </div>
+        <div style="background:#14171A;border:1px solid #E3A438;border-radius:10px;padding:16px 18px;">
+          <div style="font-size:12.5px;color:#6B7278;font-weight:500;">Wash-Sale Blocked</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:22.5px;font-weight:600;color:#F2F3F3;margin-top:6px;">9</div>
+        </div>
+        <div style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:16px 18px;">
+          <div style="font-size:12.5px;color:#6B7278;font-weight:500;">YTD Harvested</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:22.5px;font-weight:600;color:#34D399;margin-top:6px;">$1.86M</div>
+        </div>
+      </div>
+
+      <div style="background:#14171A;border:1px solid #262B2F;border-radius:10px;padding:18px 0 7px;display:flex;flex-direction:column;flex-grow:1;min-height:0;">
+        <div style="font-size:15px;font-weight:600;color:#F2F3F3;padding:0 20px 11px;flex-shrink:0;">Harvest Opportunities</div>
+        <div style="display:grid;grid-template-columns:1.7fr 1.2fr 1.1fr 1.3fr 1.6fr 1fr 0.8fr;padding:0 20px 9px;font-size:11px;font-weight:600;color:#6B7278;text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid #21252A;flex-shrink:0;">
+          <div>Account</div><div>Lot / Security</div><div>Unrealized Loss</div><div>Wash-Sale Clears</div><div>Suggested Replacement</div><div>Est. Tax Benefit</div><div>Action</div>
+        </div>
+        <div style="overflow:auto;">
+          <div class="row-link" style="display:grid;grid-template-columns:1.7fr 1.2fr 1.1fr 1.3fr 1.6fr 1fr 0.8fr;padding:10px 20px;align-items:center;border-bottom:1px solid #1B1F23;font-size:13px;">
+            <div style="font-weight:600;color:#F2F3F3;">Hartley Family Trust</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">MUNI-CA lot 4/12</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#FF9F94;">-$18,420</div>
+            <div style="color:#34D399;">Clear now</div>
+            <div style="color:#9BA1A6;">MUNI-NY Intermediate</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#34D399;">+$6,810</div>
+            <div style="color:#8AA0D6;font-weight:600;">Harvest</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:1.7fr 1.2fr 1.1fr 1.3fr 1.6fr 1fr 0.8fr;padding:10px 20px;align-items:center;border-bottom:1px solid #1B1F23;font-size:13px;">
+            <div style="font-weight:600;color:#F2F3F3;">Okafor Foundation</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">TLT lot 2/03</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#FF9F94;">-$41,900</div>
+            <div style="color:#34D399;">Clear now</div>
+            <div style="color:#9BA1A6;">IEF — 7-10Y Treasury</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#34D399;">+$15,510</div>
+            <div style="color:#8AA0D6;font-weight:600;">Harvest</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:1.7fr 1.2fr 1.1fr 1.3fr 1.6fr 1fr 0.8fr;padding:10px 20px;align-items:center;border-bottom:1px solid #1B1F23;font-size:13px;background:rgba(227,164,56,0.07);">
+            <div style="font-weight:600;color:#F2F3F3;">Delacroix Holdings LLC</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">NVDA lot 8/29</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#FF9F94;">-$9,240</div>
+            <div style="color:#E3A438;font-weight:600;">Blocked · clears Oct 14</div>
+            <div style="color:#9BA1A6;">—</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#6B7278;">—</div>
+            <div style="color:#6B7278;">Pending</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:1.7fr 1.2fr 1.1fr 1.3fr 1.6fr 1fr 0.8fr;padding:10px 20px;align-items:center;border-bottom:1px solid #1B1F23;font-size:13px;">
+            <div style="font-weight:600;color:#F2F3F3;">Vance-Whitaker Trust</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">AGG lot 5/16</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#FF9F94;">-$12,650</div>
+            <div style="color:#34D399;">Clear now</div>
+            <div style="color:#9BA1A6;">BND — Total Bond Mkt</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#34D399;">+$4,680</div>
+            <div style="color:#8AA0D6;font-weight:600;">Harvest</div>
+          </div>
+          <div class="row-link" style="display:grid;grid-template-columns:1.7fr 1.2fr 1.1fr 1.3fr 1.6fr 1fr 0.8fr;padding:10px 20px;align-items:center;font-size:13px;">
+            <div style="font-weight:600;color:#F2F3F3;">Eleanor Whitfield</div>
+            <div style="font-family:'IBM Plex Mono',monospace;">VNQ lot 1/22</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#FF9F94;">-$6,780</div>
+            <div style="color:#34D399;">Clear now</div>
+            <div style="color:#9BA1A6;">SCHH — U.S. REIT</div>
+            <div style="font-family:'IBM Plex Mono',monospace;color:#34D399;">+$2,510</div>
+            <div style="color:#8AA0D6;font-weight:600;">Harvest</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1170}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

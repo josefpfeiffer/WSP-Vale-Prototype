@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Model Risk Analysis</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+
+  :root {
+    --bg-page: #0A0C0E;
+    --bg-sidebar: #000000;
+    --bg-card: #14171A;
+    --bg-subtle: #171B1E;
+    --bg-header: #0E1113;
+    --border-row: #1B1F23;
+    --border-strong: #21252A;
+    --border-card: #262B2F;
+    --text-primary: #F2F3F3;
+    --text-secondary: #9BA1A6;
+    --text-tertiary: #6B7278;
+    --text-nav-inactive: #ADB4B9;
+    --text-dim: #5C6368;
+    --text-faint: #40464C;
+    --nav-active-text: #E8FBF9;
+    --positive: #34D399;
+    --negative: #FF7A6E;
+    --negative-soft: #FF9F94;
+    --warning: #E3A438;
+    --accent-bright: #2DD4C7;
+    --divider-on-dark: rgba(255,255,255,0.10);
+    --nav-hover-bg: rgba(255,255,255,0.06);
+  }
+  [data-theme="light"] {
+    --bg-page: #F4F5F6;
+    --bg-sidebar: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F1F3F5;
+    --bg-header: #FFFFFF;
+    --border-row: #ECEEF0;
+    --border-strong: #E3E6E9;
+    --border-card: #DEE2E6;
+    --text-primary: #161A1D;
+    --text-secondary: #5B6268;
+    --text-tertiary: #747C83;
+    --text-nav-inactive: #5B6268;
+    --text-dim: #9AA1A7;
+    --text-faint: #C7CBCF;
+    --nav-active-text: #0B7A70;
+    --positive: #0E9F6E;
+    --negative: #E14A3E;
+    --negative-soft: #D96A61;
+    --warning: #96690C;
+    --accent-bright: #0E9187;
+    --divider-on-dark: rgba(10,12,14,0.10);
+    --nav-hover-bg: rgba(10,12,14,0.045);
+  }
+
+  body { margin:0; font-family:'IBM Plex Sans',sans-serif; background:var(--bg-page); color:var(--text-primary); }
+  a { color:inherit; text-decoration:none; }
+  .nav-item:hover { background: var(--nav-hover-bg); }
+  .tab-link:hover { color:var(--accent-bright); }
+  .rrow:hover { background:var(--border-row); }
+  ::selection { background: rgba(23,191,180,0.28); }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width:100%;min-height:100vh;box-sizing:border-box;display:flex;background:var(--bg-page);">
+
+  <aside style="{{sidebarStyle}}">
+    <div style="padding:25px 18px 20px;border-bottom:1px solid var(--divider-on-dark);display:flex;align-items:flex-start;justify-content:space-between;gap:7px;">
+      <div style="min-width:0;overflow:hidden;">
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">
+          <div style="font-family:'Archivo',sans-serif;font-size:23.5px;font-weight:700;letter-spacing:0.01em;color:var(--text-primary);white-space:nowrap;">Future Firm</div>
+          <div style="font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:var(--accent-bright);margin-top:6px;white-space:nowrap;">BNY WEALTH SERVICES</div>
+        </sc-if>
+      </div>
+      <button aria-label="Collapse navigation" onClick="{{toggleNav}}" style="flex-shrink:0;background:none;border:1px solid var(--divider-on-dark);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);margin-top:3px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="transform:{{navToggleIconTransform}};transition:transform 0.18s ease;"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+    <nav style="flex-grow:1;padding:20px 13px;display:flex;flex-direction:column;gap:3px;">
+      <a href="Dashboard.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Dashboard</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Custody Book</div></sc-if></div>
+      <a href="AccountList.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Accounts</sc-if>
+      </a>
+      <a href="ClientList.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M15.3 14.3c2.9.4 5.2 2.5 5.2 5.7"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Clients</sc-if>
+      </a>
+      <a href="Groups.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="9" r="5"></circle><circle cx="16" cy="9" r="5"></circle><circle cx="12" cy="16.5" r="5"></circle></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Groups</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Managed</div></sc-if></div>
+      <a href="ModelPortfolios.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;background:rgba(23,191,180,0.16);color:var(--nav-active-text);font-size:15px;font-weight:600;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Portfolios</sc-if>
+      </a>
+      <a href="Trading.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h10l-3-3M20 17H10l3 3"/><path d="M4 7v6M20 17v-6"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><span style="flex-grow:1;">Trading</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></sc-if>
+      </a>
+      <a href="Markets.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17l5-6 4 3 5-7 4 5"/><path d="M3 21h18"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Markets</sc-if>
+      </a>
+      <a href="Alternatives.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Alternatives</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Operations</div></sc-if></div>
+      <a href="Reports.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><span style="flex-grow:1;">Reports</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></sc-if>
+      </a>
+      <a href="Workflows.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6l1 1 2-2M4.5 12l1 1 2-2M4.5 18l1 1 2-2"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Workflows</sc-if>
+      </a>
+    </nav>
+    <div style="padding:18px {{sidebarFooterPad}};border-top:1px solid var(--divider-on-dark);display:flex;align-items:center;justify-content:{{sidebarFooterJustify}};gap:13px;">
+      <div style="width:38px;height:38px;border-radius:50%;background:#17BFB4;color:#06120F;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14.5px;flex-shrink:0;">RM</div>
+      <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">
+        <div style="min-width:0;flex-grow:1;">
+          <div style="font-size:14.5px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Rachel Moreno</div>
+          <div style="font-size:12.5px;color:var(--text-secondary);">Senior Advisor</div>
+        </div>
+      </sc-if>
+    </div>
+  </aside>
+
+  <div style="flex-grow:1;min-width:0;display:flex;flex-direction:column;height:100%;">
+    <header style="height:78px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 38px;border-bottom:1px solid var(--border-card);background:var(--bg-header);">
+      <div style="font-size:14.5px;color:var(--text-secondary);">
+        <a href="Dashboard.dc.html">Wealth Platform</a><span style="margin:0 9px;color:var(--text-faint);">/</span><a href="ModelPortfolios.dc.html">Model Portfolios</a><span style="margin:0 9px;color:var(--text-faint);">/</span><span style="color:var(--text-primary);font-weight:600;">Risk Analysis</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:25px;">
+        <div style="position:relative;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.8" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search clients, accounts, securities…" aria-label="Global search" style="width:320px;height:38px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-card);padding:0 16px 0 43px;font-size:14.5px;color:var(--text-primary);font-family:'IBM Plex Sans',sans-serif;">
+        </div>
+        <button aria-label="Toggle color theme" onClick="{{toggleTheme}}" style="background:none;border:1px solid var(--border-card);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);flex-shrink:0;">
+          <sc-if value="{{isDark}}" hint-placeholder-val="{{true}}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/></svg>
+          </sc-if>
+          <sc-if value="{{isLight}}" hint-placeholder-val="{{false}}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+          </sc-if>
+        </button>
+        <button aria-label="Notifications" style="position:relative;background:none;border:none;cursor:pointer;padding:5px;color:var(--text-secondary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span style="position:absolute;top:2px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--negative);"></span>
+        </button>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--text-secondary);">Thu, Sep 17, 2026</div>
+      </div>
+    </header>
+
+    <main style="flex-grow:1;overflow:hidden;padding:36px;display:flex;flex-direction:column;gap:22px;">
+
+      <div>
+        <div style="font-family:'Archivo',sans-serif;font-size:30px;font-weight:700;color:var(--text-primary);">Risk Analysis</div>
+        <div style="font-size:15px;color:var(--text-secondary);margin-top:5px;">Risk metrics across 7 active models, as of Sep 17, 2026</div>
+      </div>
+
+      <div style="display:flex;gap:31px;border-bottom:1px solid var(--border-card);">
+        <a href="ModelPortfolios.dc.html" class="tab-link" style="padding:11px 3px;font-size:15px;color:var(--text-tertiary);">Models</a>
+        <a href="ModelProposals.dc.html" class="tab-link" style="padding:11px 3px;font-size:15px;color:var(--text-tertiary);">Proposals</a>
+        <div style="padding:11px 3px;font-size:15px;font-weight:600;color:var(--text-primary);border-bottom:2px solid #17BFB4;">Risk Analysis</div>
+        <a href="ModelTaxManagement.dc.html" class="tab-link" style="padding:11px 3px;font-size:15px;color:var(--text-tertiary);">Tax Management</a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;">
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:20px 22px;">
+          <div style="font-size:13.5px;color:var(--text-tertiary);font-weight:500;">Avg Portfolio Beta</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:27px;font-weight:600;color:var(--text-primary);margin-top:7px;">0.94</div>
+          <div style="font-size:13.5px;color:var(--text-tertiary);margin-top:5px;">vs. S&amp;P 500</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:20px 22px;">
+          <div style="font-size:13.5px;color:var(--text-tertiary);font-weight:500;">Avg Sharpe Ratio</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:27px;font-weight:600;color:var(--text-primary);margin-top:7px;">1.18</div>
+          <div style="font-size:13.5px;color:var(--text-tertiary);margin-top:5px;">Trailing 3-year</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--warning);border-radius:10px;padding:20px 22px;">
+          <div style="font-size:13.5px;color:var(--text-tertiary);font-weight:500;">Above VaR Limit</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:27px;font-weight:600;color:var(--text-primary);margin-top:7px;">2</div>
+          <div style="font-size:13.5px;color:var(--warning);margin-top:5px;">Review required</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:20px 22px;">
+          <div style="font-size:13.5px;color:var(--text-tertiary);font-weight:500;">Highest Drawdown</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:22.5px;font-weight:600;color:var(--negative);margin-top:7px;">-34.2%</div>
+          <div style="font-size:13.5px;color:var(--text-tertiary);margin-top:5px;">Aggressive Growth</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;overflow:hidden;">
+        <div style="display:grid;grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 1fr 1.1fr 1.2fr;padding:13px 25px;font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid var(--border-strong);background:var(--bg-subtle);">
+          <div>Model</div><div style="text-align:right;">Std Dev (Ann.)</div><div style="text-align:right;">Beta</div><div style="text-align:right;">Sharpe</div><div style="text-align:right;">Max Drawdown</div><div style="text-align:right;">95% VaR (1-Mo)</div><div>Risk Rating</div>
+        </div>
+        <div class="rrow" style="display:grid;grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 1fr 1.1fr 1.2fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div style="font-weight:600;">Conservative Income</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">5.8%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">0.42</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">1.34</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-9.1%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">-1.8%</div>
+          <div><span style="background:rgba(52,211,153,0.14);color:var(--positive);font-size:12px;font-weight:600;padding:3px 9px;border-radius:100px;">Low</span></div>
+        </div>
+        <div class="rrow" style="display:grid;grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 1fr 1.1fr 1.2fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div style="font-weight:600;">Municipal Income</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">4.9%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">0.31</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">1.28</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-6.4%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">-1.5%</div>
+          <div><span style="background:rgba(52,211,153,0.14);color:var(--positive);font-size:12px;font-weight:600;padding:3px 9px;border-radius:100px;">Low</span></div>
+        </div>
+        <div class="rrow" style="display:grid;grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 1fr 1.1fr 1.2fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div style="font-weight:600;">Moderate Growth</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">10.2%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">0.88</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">1.21</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-19.6%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">-3.4%</div>
+          <div><span style="background:rgba(138,160,214,0.18);color:#8AA0D6;font-size:12px;font-weight:600;padding:3px 9px;border-radius:100px;">Moderate</span></div>
+        </div>
+        <div class="rrow" style="display:grid;grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 1fr 1.1fr 1.2fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div style="font-weight:600;">Growth &amp; Income</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">11.4%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">0.96</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">1.15</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-21.8%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">-3.8%</div>
+          <div><span style="background:rgba(138,160,214,0.18);color:#8AA0D6;font-size:12px;font-weight:600;padding:3px 9px;border-radius:100px;">Moderate</span></div>
+        </div>
+        <div class="rrow" style="display:grid;grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 1fr 1.1fr 1.2fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div style="font-weight:600;">ESG Balanced</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">10.8%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">0.91</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">1.09</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-20.4%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">-3.6%</div>
+          <div><span style="background:rgba(138,160,214,0.18);color:#8AA0D6;font-size:12px;font-weight:600;padding:3px 9px;border-radius:100px;">Moderate</span></div>
+        </div>
+        <div class="rrow" style="display:grid;grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 1fr 1.1fr 1.2fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div style="font-weight:600;">Tax-Aware Growth</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">13.6%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">1.08</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">1.02</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-26.3%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--warning);">-4.5% ⚠</div>
+          <div><span style="background:rgba(227,164,56,0.16);color:var(--warning);font-size:12px;font-weight:600;padding:3px 9px;border-radius:100px;">Moderate-High</span></div>
+        </div>
+        <div class="rrow" style="display:grid;grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 1fr 1.1fr 1.2fr;padding:12px 25px;align-items:center;font-size:14px;">
+          <div style="font-weight:600;">Aggressive Growth</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">18.9%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">1.34</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">0.87</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-34.2%</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--warning);">-6.2% ⚠</div>
+          <div><span style="background:rgba(255,122,110,0.14);color:var(--negative);font-size:12px;font-weight:600;padding:3px 9px;border-radius:100px;">High</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:22px;flex-grow:1;min-height:0;">
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:25px;">
+          <div style="font-size:16px;font-weight:600;color:var(--text-primary);">Stress Test — Moderate Growth Model</div>
+          <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px;margin-bottom:18px;">Hypothetical impact on $384.2M in assigned AUM, historical scenario analogs</div>
+          <div style="display:grid;grid-template-columns:1.6fr 0.9fr 1fr;padding:0 3px 9px;font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid var(--border-strong);">
+            <div>Scenario</div><div style="text-align:right;">Impact</div><div style="text-align:right;">AUM at Risk</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 0.9fr 1fr;padding:12px 3px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+            <div>2008 Financial Crisis</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-38.4%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-$147.6M</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 0.9fr 1fr;padding:12px 3px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+            <div>2020 COVID Crash</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-24.1%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-$92.6M</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 0.9fr 1fr;padding:12px 3px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+            <div>Rate Shock +100bp</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-6.8%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-$26.1M</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 0.9fr 1fr;padding:12px 3px;align-items:center;font-size:14px;">
+            <div>Stagflation (12-mo)</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-14.2%</div><div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative);">-$54.6M</div>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;padding:25px;">
+          <div style="font-size:16px;font-weight:600;color:var(--text-primary);">Risk vs. Return</div>
+          <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px;margin-bottom:7px;">Annualized std dev vs. YTD return, by model</div>
+          <svg viewBox="0 0 640 320" preserveAspectRatio="none" style="width:100%;height:250px;display:block;" role="img" aria-label="Scatter chart plotting annualized standard deviation against YTD return for seven model portfolios, showing higher-risk models generally earning higher returns.">
+            <line x1="60" y1="10" x2="60" y2="270" stroke="var(--border-strong)" stroke-width="1"></line>
+            <line x1="60" y1="270" x2="620" y2="270" stroke="var(--border-strong)" stroke-width="1"></line>
+            <line x1="200" y1="10" x2="200" y2="270" stroke="var(--bg-subtle)" stroke-width="1"></line>
+            <line x1="340" y1="10" x2="340" y2="270" stroke="var(--bg-subtle)" stroke-width="1"></line>
+            <line x1="480" y1="10" x2="480" y2="270" stroke="var(--bg-subtle)" stroke-width="1"></line>
+            <line x1="60" y1="205" x2="620" y2="205" stroke="var(--bg-subtle)" stroke-width="1"></line>
+            <line x1="60" y1="140" x2="620" y2="140" stroke="var(--bg-subtle)" stroke-width="1"></line>
+            <line x1="60" y1="75" x2="620" y2="75" stroke="var(--bg-subtle)" stroke-width="1"></line>
+            <text x="60" y="288" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">0%</text>
+            <text x="200" y="288" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">5%</text>
+            <text x="340" y="288" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">10%</text>
+            <text x="480" y="288" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">15%</text>
+            <text x="600" y="288" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">20%</text>
+            <text x="305" y="308" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="var(--text-secondary)">Annualized Std Dev</text>
+            <text x="52" y="274" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">0%</text>
+            <text x="52" y="209" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">4%</text>
+            <text x="52" y="144" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">8%</text>
+            <text x="52" y="79" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">12%</text>
+            <text x="52" y="14" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--text-tertiary)">16%</text>
+
+            <circle cx="222.4" cy="185.5" r="6" fill="var(--positive)"></circle>
+            <text x="222.4" y="172" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="var(--text-secondary)">Conservative Income</text>
+
+            <circle cx="197.2" cy="195.3" r="6" fill="var(--positive)"></circle>
+            <text x="197.2" y="220" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="var(--text-secondary)">Municipal Income</text>
+
+            <circle cx="345.6" cy="114" r="6" fill="#8AA0D6"></circle>
+            <text x="345.6" y="101" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="var(--text-secondary)">Moderate Growth</text>
+
+            <circle cx="379.2" cy="101" r="6" fill="#8AA0D6"></circle>
+            <text x="379.2" y="88" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="var(--text-secondary)">Growth &amp; Income</text>
+
+            <circle cx="362.4" cy="128.6" r="6" fill="#8AA0D6"></circle>
+            <text x="362.4" y="152" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="var(--text-secondary)">ESG Balanced</text>
+
+            <circle cx="440.8" cy="88" r="6" fill="var(--warning)"></circle>
+            <text x="440.8" y="75" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="var(--text-secondary)">Tax-Aware Growth</text>
+
+            <circle cx="589.2" cy="29.5" r="6" fill="var(--negative)"></circle>
+            <text x="547" y="21" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="var(--text-secondary)">Aggressive Growth</text>
+          </svg>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1470}}'>
+class Component extends DCLogic {
+  state = { theme: 'dark', navExpanded: true };
+
+  toggleTheme() {
+    this.setState({ theme: this.state.theme === 'dark' ? 'light' : 'dark' });
+  }
+
+  toggleNav() {
+    this.setState({ navExpanded: !this.state.navExpanded });
+  }
+
+  renderVals() {
+    const theme = this.state.theme ?? 'dark';
+    const navExpanded = this.state.navExpanded ?? true;
+    return {
+      theme,
+      isDark: theme === 'dark',
+      isLight: theme === 'light',
+      navExpanded,
+      navCollapsed: !navExpanded,
+      toggleTheme: () => this.toggleTheme(),
+      toggleNav: () => this.toggleNav(),
+      sidebarStyle: `width:${navExpanded ? '262px' : '82px'};flex-shrink:0;background:var(--bg-sidebar);color:var(--text-primary);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;align-self:flex-start;transition:width 0.18s ease;overflow:hidden;`,
+      sidebarFooterPad: navExpanded ? '20px' : '8px',
+      sidebarFooterJustify: navExpanded ? 'flex-start' : 'center',
+      navToggleIconTransform: navExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
+    };
+  }
+}
+</script>
+</body>
+</html>

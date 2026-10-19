@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Markets</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+
+  :root {
+    --bg-page: #0A0C0E;
+    --bg-sidebar: #000000;
+    --bg-card: #14171A;
+    --bg-subtle: #171B1E;
+    --bg-header: #0E1113;
+    --border-row: #1B1F23;
+    --border-strong: #21252A;
+    --border-card: #262B2F;
+    --text-primary: #F2F3F3;
+    --text-secondary: #9BA1A6;
+    --text-tertiary: #6B7278;
+    --text-nav-inactive: #ADB4B9;
+    --text-dim: #5C6368;
+    --text-faint: #40464C;
+    --nav-active-text: #E8FBF9;
+    --positive: #34D399;
+    --negative: #FF7A6E;
+    --negative-soft: #FF9F94;
+    --warning: #E3A438;
+    --accent-bright: #2DD4C7;
+    --divider-on-dark: rgba(255,255,255,0.10);
+    --nav-hover-bg: rgba(255,255,255,0.06);
+  }
+  [data-theme="light"] {
+    --bg-page: #F4F5F6;
+    --bg-sidebar: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F1F3F5;
+    --bg-header: #FFFFFF;
+    --border-row: #ECEEF0;
+    --border-strong: #E3E6E9;
+    --border-card: #DEE2E6;
+    --text-primary: #161A1D;
+    --text-secondary: #5B6268;
+    --text-tertiary: #747C83;
+    --text-nav-inactive: #5B6268;
+    --text-dim: #9AA1A7;
+    --text-faint: #C7CBCF;
+    --nav-active-text: #0B7A70;
+    --positive: #0E9F6E;
+    --negative: #E14A3E;
+    --negative-soft: #D96A61;
+    --warning: #96690C;
+    --accent-bright: #0E9187;
+    --divider-on-dark: rgba(10,12,14,0.10);
+    --nav-hover-bg: rgba(10,12,14,0.045);
+  }
+
+  body { margin:0; font-family:'IBM Plex Sans',sans-serif; background:var(--bg-page); color:var(--text-primary); }
+  a { color:inherit; text-decoration:none; }
+  .nav-item:hover { background: var(--nav-hover-bg); }
+  .tab-link:hover { color:var(--accent-bright); }
+  .row-link { transition: background 0.12s ease; }
+  .row-link:hover { background:var(--border-row); }
+  .act-btn:hover { opacity:0.85; }
+  ::selection { background: rgba(23,191,180,0.28); }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width:100%;min-height:100vh;box-sizing:border-box;display:flex;background:var(--bg-page);">
+
+  <aside style="{{sidebarStyle}}">
+    <div style="padding:25px 18px 20px;border-bottom:1px solid var(--divider-on-dark);display:flex;align-items:flex-start;justify-content:space-between;gap:7px;">
+      <div style="min-width:0;overflow:hidden;">
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">
+          <div style="font-family:'Archivo',sans-serif;font-size:23.5px;font-weight:700;letter-spacing:0.01em;color:var(--text-primary);white-space:nowrap;">Future Firm</div>
+          <div style="font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:var(--accent-bright);margin-top:6px;white-space:nowrap;">BNY WEALTH SERVICES</div>
+        </sc-if>
+      </div>
+      <button aria-label="Collapse navigation" onClick="{{toggleNav}}" style="flex-shrink:0;background:none;border:1px solid var(--divider-on-dark);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);margin-top:3px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="transform:{{navToggleIconTransform}};transition:transform 0.18s ease;"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+    <nav style="flex-grow:1;padding:20px 13px;display:flex;flex-direction:column;gap:3px;">
+      <a href="Dashboard.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Dashboard</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Custody Book</div></sc-if></div>
+      <a href="AccountList.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Accounts</sc-if>
+      </a>
+      <a href="ClientList.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M15.3 14.3c2.9.4 5.2 2.5 5.2 5.7"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Clients</sc-if>
+      </a>
+      <a href="Groups.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="9" r="5"></circle><circle cx="16" cy="9" r="5"></circle><circle cx="12" cy="16.5" r="5"></circle></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Groups</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Managed</div></sc-if></div>
+      <a href="ModelPortfolios.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Portfolios</sc-if>
+      </a>
+      <a href="Trading.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h10l-3-3M20 17H10l3 3"/><path d="M4 7v6M20 17v-6"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><span style="flex-grow:1;">Trading</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></sc-if>
+      </a>
+      <div class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;background:rgba(23,191,180,0.16);color:var(--nav-active-text);font-size:15px;font-weight:600;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17l5-6 4 3 5-7 4 5"/><path d="M3 21h18"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Markets</sc-if>
+      </div>
+      <a href="Alternatives.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Alternatives</sc-if>
+      </a>
+      <div style="padding:14px 16px 6px;"><sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><div style="font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);">Operations</div></sc-if></div>
+      <a href="Reports.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}"><span style="flex-grow:1;">Reports</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></sc-if>
+      </a>
+      <a href="Workflows.dc.html" class="nav-item" style="display:flex;align-items:center;gap:13px;padding:11px 16px;border-radius:8px;color:var(--text-nav-inactive);font-size:15px;font-weight:500;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6l1 1 2-2M4.5 12l1 1 2-2M4.5 18l1 1 2-2"/></svg>
+        <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">Workflows</sc-if>
+      </a>
+    </nav>
+    <div style="padding:18px {{sidebarFooterPad}};border-top:1px solid var(--divider-on-dark);display:flex;align-items:center;justify-content:{{sidebarFooterJustify}};gap:13px;">
+      <div style="width:38px;height:38px;border-radius:50%;background:#17BFB4;color:#06120F;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14.5px;flex-shrink:0;">RM</div>
+      <sc-if value="{{navExpanded}}" hint-placeholder-val="{{true}}">
+        <div style="min-width:0;flex-grow:1;">
+          <div style="font-size:14.5px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Rachel Moreno</div>
+          <div style="font-size:12.5px;color:var(--text-secondary);">Senior Advisor</div>
+        </div>
+      </sc-if>
+    </div>
+  </aside>
+
+  <div style="flex-grow:1;min-width:0;display:flex;flex-direction:column;height:100%;">
+    <header style="height:78px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 38px;border-bottom:1px solid var(--border-card);background:var(--bg-header);">
+      <div style="font-size:14.5px;color:var(--text-secondary);">
+        <a href="Dashboard.dc.html">Wealth Platform</a><span style="margin:0 9px;color:var(--text-faint);">/</span><span style="color:var(--text-primary);font-weight:600;">Markets</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:25px;">
+        <div style="position:relative;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.8" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search clients, accounts, securities…" aria-label="Global search" style="width:320px;height:38px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-card);padding:0 16px 0 43px;font-size:14.5px;color:var(--text-primary);font-family:'IBM Plex Sans',sans-serif;">
+        </div>
+        <button aria-label="Toggle color theme" onClick="{{toggleTheme}}" style="background:none;border:1px solid var(--border-card);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);flex-shrink:0;">
+          <sc-if value="{{isDark}}" hint-placeholder-val="{{true}}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/></svg>
+          </sc-if>
+          <sc-if value="{{isLight}}" hint-placeholder-val="{{false}}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+          </sc-if>
+        </button>
+        <button aria-label="Notifications" style="position:relative;background:none;border:none;cursor:pointer;padding:5px;color:var(--text-secondary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span style="position:absolute;top:2px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--negative);"></span>
+        </button>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--text-secondary);">Thu, Sep 17, 2026</div>
+      </div>
+    </header>
+
+    <main style="flex-grow:1;overflow:hidden;padding:36px;display:flex;flex-direction:column;gap:20px;">
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+        <div>
+          <div style="font-family:'Archivo',sans-serif;font-size:30px;font-weight:700;color:var(--text-primary);">Markets</div>
+          <div style="font-size:15px;color:var(--text-secondary);margin-top:5px;">Equities, fixed income, funds &amp; ETFs — research and add to accounts or models</div>
+        </div>
+        <div style="display:flex;gap:11px;">
+          <button style="background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border-card);border-radius:8px;padding:11px 20px;font-size:14.5px;font-weight:600;cursor:pointer;">My Watchlist</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;">
+        <div style="background:#062825;border:1px solid #0E4A44;border-radius:10px;padding:16px 20px;">
+          <div style="font-size:13px;color:#7FD9CF;font-weight:500;">S&amp;P 500</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:21.5px;font-weight:600;color:var(--text-primary);margin-top:5px;">6,842.15</div>
+          <div style="font-size:13px;color:var(--positive);margin-top:3px;">▲ 0.62% today</div>
+        </div>
+        <div style="background:#062825;border:1px solid #0E4A44;border-radius:10px;padding:16px 20px;">
+          <div style="font-size:13px;color:#7FD9CF;font-weight:500;">Nasdaq Composite</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:21.5px;font-weight:600;color:var(--text-primary);margin-top:5px;">22,140.80</div>
+          <div style="font-size:13px;color:var(--positive);margin-top:3px;">▲ 0.84% today</div>
+        </div>
+        <div style="background:#062825;border:1px solid #0E4A44;border-radius:10px;padding:16px 20px;">
+          <div style="font-size:13px;color:#7FD9CF;font-weight:500;">10Y Treasury Yield</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:21.5px;font-weight:600;color:var(--text-primary);margin-top:5px;">4.32%</div>
+          <div style="font-size:13px;color:var(--negative-soft);margin-top:3px;">▲ 2 bps today</div>
+        </div>
+        <div style="background:#062825;border:1px solid #0E4A44;border-radius:10px;padding:16px 20px;">
+          <div style="font-size:13px;color:#7FD9CF;font-weight:500;">VIX</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:21.5px;font-weight:600;color:var(--text-primary);margin-top:5px;">14.2</div>
+          <div style="font-size:13px;color:var(--positive);margin-top:3px;">▼ 0.4 today</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:27px;border-bottom:1px solid var(--border-card);">
+        <div style="padding:10px 3px;font-size:15px;font-weight:600;color:var(--text-primary);border-bottom:2px solid #17BFB4;">All</div>
+        <div class="tab-link" style="padding:10px 3px;font-size:15px;color:var(--text-tertiary);cursor:pointer;">Equities</div>
+        <div class="tab-link" style="padding:10px 3px;font-size:15px;color:var(--text-tertiary);cursor:pointer;">Fixed Income</div>
+        <div class="tab-link" style="padding:10px 3px;font-size:15px;color:var(--text-tertiary);cursor:pointer;">Mutual Funds</div>
+        <div class="tab-link" style="padding:10px 3px;font-size:15px;color:var(--text-tertiary);cursor:pointer;">ETFs</div>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;overflow:hidden;flex-grow:1;">
+        <div style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;font-size:12px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid var(--border-strong);background:var(--bg-subtle);">
+          <div>Security</div><div>Asset Class</div><div style="text-align:right;">Price</div><div style="text-align:right;">Chg (1D)</div><div style="text-align:right;">Yield / Exp.</div><div style="text-align:right;">Actions</div>
+        </div>
+
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">AAPL</div><div style="font-size:12.5px;color:var(--text-tertiary);">Apple Inc.</div></div>
+          <div style="color:var(--text-secondary);">Equity</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$238.42</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+1.24 (+0.52%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">—</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;" onclick="event.preventDefault();">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">MSFT</div><div style="font-size:12.5px;color:var(--text-tertiary);">Microsoft Corp.</div></div>
+          <div style="color:var(--text-secondary);">Equity</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$521.10</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+3.86 (+0.75%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">0.68%</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">NVDA</div><div style="font-size:12.5px;color:var(--text-tertiary);">NVIDIA Corp.</div></div>
+          <div style="color:var(--text-secondary);">Equity</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$187.55</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative-soft);">-2.10 (-1.11%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">0.03%</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">VOO</div><div style="font-size:12.5px;color:var(--text-tertiary);">Vanguard S&amp;P 500 ETF</div></div>
+          <div style="color:var(--text-secondary);">ETF</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$612.48</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+2.94 (+0.48%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">1.20% / 0.03%</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">QQQ</div><div style="font-size:12.5px;color:var(--text-tertiary);">Invesco QQQ Trust</div></div>
+          <div style="color:var(--text-secondary);">ETF</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$521.77</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+4.02 (+0.78%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">0.52% / 0.20%</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">AGG</div><div style="font-size:12.5px;color:var(--text-tertiary);">iShares Core U.S. Aggregate Bond ETF</div></div>
+          <div style="color:var(--text-secondary);">ETF</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$98.62</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--negative-soft);">-0.08 (-0.08%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">3.80% / 0.03%</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">US Treasury 10Y Note</div><div style="font-size:12.5px;color:var(--text-tertiary);">CUSIP 91282CJZ9</div></div>
+          <div style="color:var(--text-secondary);">Fixed Income</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$99.14</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+0.06 (+0.06%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">4.32%</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;border-bottom:1px solid var(--border-row);font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">PIMCO Total Return Fund</div><div style="font-size:12.5px;color:var(--text-tertiary);">Institutional Class</div></div>
+          <div style="color:var(--text-secondary);">Mutual Fund</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$9.84</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+0.02 (+0.20%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">3.90% / 0.51%</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+        <a href="MarketsSecurityDetail.dc.html" class="row-link" style="display:grid;grid-template-columns:2.1fr 1fr 0.95fr 1.15fr 1.3fr 1.6fr;padding:12px 25px;align-items:center;font-size:14px;">
+          <div><div style="font-weight:600;color:var(--text-primary);">Fidelity Contrafund</div><div style="font-size:12.5px;color:var(--text-tertiary);">Class K6</div></div>
+          <div style="color:var(--text-secondary);">Mutual Fund</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;">$23.61</div>
+          <div style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--positive);">+0.14 (+0.60%)</div>
+          <div style="text-align:right;color:var(--text-tertiary);">— / 0.39%</div>
+          <div style="text-align:right;display:flex;gap:7px;justify-content:flex-end;">
+            <span class="act-btn" style="border:1px solid var(--border-card);color:var(--text-secondary);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Account</span>
+            <span class="act-btn" style="background:#17BFB4;color:#06120F;font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;">+ Model</span>
+          </div>
+        </a>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  state = { theme: 'dark', navExpanded: true };
+
+  toggleTheme() {
+    this.setState({ theme: this.state.theme === 'dark' ? 'light' : 'dark' });
+  }
+
+  toggleNav() {
+    this.setState({ navExpanded: !this.state.navExpanded });
+  }
+
+  renderVals() {
+    const theme = this.state.theme ?? 'dark';
+    const navExpanded = this.state.navExpanded ?? true;
+    return {
+      theme,
+      isDark: theme === 'dark',
+      isLight: theme === 'light',
+      navExpanded,
+      navCollapsed: !navExpanded,
+      toggleTheme: () => this.toggleTheme(),
+      toggleNav: () => this.toggleNav(),
+      sidebarStyle: `width:${navExpanded ? '262px' : '82px'};flex-shrink:0;background:var(--bg-sidebar);color:var(--text-primary);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;align-self:flex-start;transition:width 0.18s ease;overflow:hidden;`,
+      sidebarFooterPad: navExpanded ? '20px' : '8px',
+      sidebarFooterJustify: navExpanded ? 'flex-start' : 'center',
+      navToggleIconTransform: navExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
+    };
+  }
+}
+</script>
+</body>
+</html>
