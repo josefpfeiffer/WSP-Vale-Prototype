@@ -1,6 +1,6 @@
-# Ashworth & Vale Wealth Platform
+# Vale Prototype
 
-A clickable, full-width prototype of a wealth-management desktop platform (dark theme, BNY-inspired).
+A clickable, highly interactive prototype of a wealth-management desktop platform (dark theme, BNY-inspired).
 34 screens: dashboard, clients/accounts/groups, account detail views, model portfolios,
 trading tools, markets, alternatives, reports and workflows.
 
